@@ -15,7 +15,7 @@ on:
   workflow_dispatch: 
 
 jobs:
-  build:
+  Docker_Build_And_Push:
     
     runs-on: ubuntu-latest
     env: 
@@ -40,7 +40,7 @@ jobs:
         uses: docker/metadata-action@v4.1.0
         with:
           images: |
-            #{{ secrets.DOCKERHUB_USERNAME }}/review_trackers_project
+            shehzadmohammed/review_trackers_project
           tags: |
             type=ref,event=branch
             type=ref,event=pr
