@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with: 
           context: Python-Server
-          platforms: linux/amd64, linux/arm64, linux/arm/v7 # Enabling mac and raspberry pi users :)
+          platforms: linux/amd64, linux/arm64 # Enabling mac users :)
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -58,6 +58,7 @@ jobs:
           tags: ${{ steps.data.outputs.tags }}
           labels: ${{ steps.data.outputs.label}}
       - name: Run Trivy vulnerability scanner
+        needs: 
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/review_trackers_project:${{ steps.data.outputs.tags }}'
