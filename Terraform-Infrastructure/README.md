@@ -14,7 +14,7 @@ local version 2.2.3
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
+| Name | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | aks_cluster_name | string | rt-py-kube | yes |
 | kubernetes_version | string | 1.25.3 | yes | 

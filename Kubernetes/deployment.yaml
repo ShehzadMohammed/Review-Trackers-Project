@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rt-py-deployment
+  labels:
+    app: rt-py-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rt-py-deployment
+  template:
+    metadata:
+      labels:
+        app: rt-py-deployment
+    spec:
+      containers:
+        - name: rt-py
+          image: __Repository__/__Image_Name__:__Tag__
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 300m
+              memory: "100Mi"
+            requests:
+              cpu: 100m
+              memory: "50Mi"
