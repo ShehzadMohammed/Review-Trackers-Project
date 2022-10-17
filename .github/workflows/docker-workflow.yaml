@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with: 
           context: Python-Server
-          platforms: linux/amd64, linux/arm64 # Enabling mac users :)
+          platforms: linux/amd64, linux/arm/v6  # Enabling mac users :)
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
