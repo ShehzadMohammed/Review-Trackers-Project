@@ -44,6 +44,7 @@ jobs:
     - name: Build and Push 
     - uses: docker/build-push-action@v3.2.0
       with: 
+        context: Python-Server/Dockerfile
         platforms: linux/amd64, linux/arm64, linux/arm/v7 # Enabling mac and raspberry pi users :)
         builder: $({ steps.buildx.output.name })
         cache-from: type=gha
