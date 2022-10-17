@@ -1,5 +1,5 @@
 # Alpine is strong, in this case, with only geocoder instalation that is not part of any standard precompild wheels
-FROM python:3.10.8-alpine3.16 AS env-build
+FROM python:alpine3.16 AS env-build
 # Server running as non-root ~ security precaution.
 # Upgrading pip and apk to install security updates. 
 RUN set -eux; \
