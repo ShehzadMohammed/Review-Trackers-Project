@@ -14,7 +14,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 - [Python](#Python)
 - [Terraform](#Terraform)
 - [Kubernetes](#Kubernetes)
-- [Workflows]{#Workflows}
+- [Workflows](#Workflows)
 - [Requirements Met](#Requirements)
 - [Needed Improvements](#Improvements)
 
