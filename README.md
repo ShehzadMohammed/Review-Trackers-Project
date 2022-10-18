@@ -4,7 +4,7 @@
 Trunk-Based Development in a MonoRepo thus so many testing commits since this is a rushed one-day project. Essentially, we have four workflows ~
 - Docker-workflow: Builds and pushes docker file to a public dockerhub account
 - Terraform-kube-workflow: Initializes terraform creating AKS cluster then creates Kubernetes deployment and service. 
-- Continuous-Deployment: Continuously applies terraform code 
+- Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. 
 - Terraform-Destroy: Only on manual trigger kills the environment 
 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
@@ -37,9 +37,16 @@ The module directory is used to provision AKS cluster for the python app and sto
 - AKS cluster should be self managed with better security in more sophisticated clusters. In this case, it is completely okay to use managed cluster since this is a very preliminary interview project. 
 - The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   
 
-## Kubernetes
-- At the inception of this project, the plan comprised of end-to-end observability, tests, and scans ~ however, it proved too out of the scope for this project 
+## Kubernetes 
+The most simplest Kubernetes cluster implementation. 
 
-## Workflows
+### improvements
+- At the inception of this project(Monday), the plan comprised of end-to-end observability, functionality and integration tests, and various security scans with a backend Postgres SQL DB with a fully functional API and managing the CI/CD on that  ~ however, it proved too much for the scope of this project. Originally helm charts where used with Prometheus and Grafana but soon removed realizing it was not possible for a 1-day project. Definitely, reimplementing all of these would make the project much better. 
+- RBAC and general access control all through the environment would have been a considerable improvement, and implementing better networking principles with organizing a supernet and moving down --> to have better well documented project. (I love SDWAN controller!) 
+
+## Workflows Improvements
+- Less convoluted workflows with better documentation are essential in directory ~ improve readability and future adoption from engineers. 
+- More testing and approval in workflows would also be a good edition.  
+
 ## Requirements
-## Improvements
+- All Requirements Met. 

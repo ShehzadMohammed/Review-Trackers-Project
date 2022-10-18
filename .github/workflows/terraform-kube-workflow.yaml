@@ -54,14 +54,14 @@ jobs:
       - name: Get Storage Account Name
         id: storageaccname
         run: |
-          cat Terraform-Infrastructure/storageaccname.txt >> $output; \
+          value=`cat Terraform-Infrastructure/storageaccname.txt`; \
           echo "::set-output name=storageaccname::$output"
 
       - name: Move Terraform State to Storage Account
         working-directory: Terraform-Infrastructure/
         run: |
           terraform init -migrate-state \
-          -backend-config="storage_account_name=${{ steps.storageaccname.outputs.storageaccname }}" \
+          -backend-config="storage_account_name="${{ steps.storageaccname.outputs.storageaccname }}"" \
           -backend-config="container_name="remotestatecontainer"" \
           -backend-config="resource_group_name="rt-infra"" \
           -backend-config="key=terraform.tfstate"; \
@@ -75,7 +75,7 @@ jobs:
           tokenPrefix: __
           tokenSuffix: __
         env:
-          REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME}}
+          REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}
           IMAGE_NAME: review_trackers_project
           TAG: main
 
