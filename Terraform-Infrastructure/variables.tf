@@ -12,12 +12,12 @@ variable "kubernetes_version" {
 }
 variable "number_of_nodes" {
   type        = number
-  default     = 3
+  default     = 1
   description = "Defines the number of nodes inside of the cluster"
 }
 variable "resource_group_location" {
   type        = string
-  default     = "East US 2"
+  default     = "East US"
   description = "Define the location of the resource group containing AKS cluster"
 }
 variable "resource_group_name" {
