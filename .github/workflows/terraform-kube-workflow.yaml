@@ -1,13 +1,10 @@
-name: Terraform and Kubernetes Deployment
+name: Intial Deployment
 
 on:
   push:
     branches: [ "main" ]
     paths: 
-      - 'Kubernetes/**'
-      - 'Terraform-Infrastructure/**'
       - '.github/workflows/terraform-kube-workflow.yaml'
-
   workflow_dispatch:
 
 jobs:

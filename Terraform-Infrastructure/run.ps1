@@ -33,7 +33,7 @@ terraform init -migrate-state -force-copy `
     -backend-config="storage_account_name=$SAN" `
     -backend-config="container_name=$SCA" `
     -backend-config="access_key=$PAK" `
-    -backend-config="key=$key" 
+    -backend-config="key=$key"
 
 #Initiates the migration & Configuring backend via the variables defined earlier
 terraform plan
