@@ -1,7 +1,7 @@
 $ErrorActionPreference = "STOP"
 Set-Location ./Terraform-Infrastructure
 Get-Date -Format "HHmmMMddyyyy" > don.txt
-$date = (Get-Content ./don.txt).ForEach({ { 0 } -f $_ })
+$date = (Get-Content ./don.txt)
 $stringappend = "rtpystorage"
 $paramforstr = $stringappend + $date
 #Takes Parameter1 for Storage Account Name

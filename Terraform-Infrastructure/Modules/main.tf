@@ -3,23 +3,7 @@ resource "azurerm_resource_group" "resource_group" {
   name     = var.resource_group_name
   location = var.resource_group_location
 }
-# # AKS Virtual Network
-# resource "azurerm_virtual_network" "aksvnet" {
-#   name                = "rt-network"
-#   location            = azurerm_resource_group.aks_rg.location
-#   resource_group_name = azurerm_resource_group.aks_rg.name
-#   address_space       = ["10.0.0.0/8"]
-# }
-
-# # Subnet
-# resource "azurerm_subnet" "aks-default" {
-#   name                 = "aks-default-subnet"
-#   virtual_network_name = azurerm_virtual_network.aksvnet.name
-#   resource_group_name  = azurerm_resource_group.aks_rg.name
-#   address_prefixes     = ["10.240.0.0/16"]
-# }
-# # AKS Cluster
-
+# AKS Cluster
 resource "azurerm_kubernetes_cluster" "rt_aks" {
   name                = var.aks_cluster_name
   location            = azurerm_resource_group.resource_group.location
@@ -48,11 +32,7 @@ resource "azurerm_kubernetes_cluster" "rt_aks" {
     network_plugin    = "kubenet"
     load_balancer_sku = "standard"
   }
-
-
-
 }
-
 # Storage Account for State
 resource "azurerm_storage_account" "remote_state_storage_account" {
   provider                 = azurerm
