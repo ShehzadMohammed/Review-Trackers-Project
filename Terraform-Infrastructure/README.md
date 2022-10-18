@@ -28,4 +28,8 @@ local version 2.2.3
 
 ## Outputs 
 
-No outputs. 
+| Name | Description |
+|------|-------------|
+| primaryaccesskey | This is the primary access key. On the first run through the script, this creates the txt file to store this information which is later used as a PowerShell variable to authenticate. | 
+| storageaccname | This is the storage account name. On the first run through the script, this creates the txt file to store this information to identify the globally unique storage account. |
+| storagecontname | This is the storage container name. On the first run through the script, this creates the txt file to store this information so the script can store the state file in the correct location. |

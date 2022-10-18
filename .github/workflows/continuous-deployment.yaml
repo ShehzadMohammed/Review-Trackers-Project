@@ -1,0 +1,11 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 
+      - 'Terraform-Infrastructure/**.tf'
+      - 'Kubernetes/**'
+
+    workflow_dispatch:
+

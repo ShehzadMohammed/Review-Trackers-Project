@@ -1,7 +1,7 @@
 $ErrorActionPreference = "STOP"
 Set-Location ./Terraform-Infrastructure
-Get-Date -Format "HHmmMMddyyyy" > don.txt
-$date = (Get-Content ./don.txt)
+Get-Date -Format "HHmmMMddyyyy" > dateandtime.txt
+$date = (Get-Content ./dateandtime.txt)
 $stringappend = "rtpystorage"
 $paramforstr = $stringappend + $date
 #Takes Parameter1 for Storage Account Name
@@ -11,18 +11,15 @@ $paramforstr = $stringappend + $date
 terraform init
 terraform plan 
 terraform apply --auto-approve
-terraform output -raw SAS > SAStoken.txt
-terraform output -raw storageaccname > SAN.txt
-terraform output -raw storagecontname > SCA.txt
-terraform output -raw PAK > PAK.txt
+terraform output -raw storageaccname > storageaccname.txt
+terraform output -raw storagecontname > storagecontname.txt
+terraform output -raw primaryaccessskey > primaryaccessskey.txt
 #Builds TF and outputs certain data to txt files
 
-$date = (Get-Content ./don.txt).ForEach({ '"{0}"' -f $_ })
-
 # $SAS = (Get-Content ./SAStoken.txt).ForEach({ '"{0}"' -f $_ })
-$SAN = (Get-Content ./SAN.txt).ForEach({ '"{0}"' -f $_ })
-$SCA = (Get-Content ./SCA.txt).ForEach({ '"{0}"' -f $_ })
-$PAK = (Get-Content ./PAK.txt).ForEach({ '"{0}"' -f $_ })
+$SAN = (Get-Content ./storageaccname.txt).ForEach({ '"{0}"' -f $_ })
+$SCA = (Get-Content ./storagecontname.txt).ForEach({ '"{0}"' -f $_ })
+$PAK = (Get-Content ./primaryaccessskey.txt).ForEach({ '"{0}"' -f $_ })
 $key = "terraform.tfstate"
 #Formats and initializes the variables used in the migration process from local to azurerm 
 
