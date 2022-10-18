@@ -9,7 +9,7 @@ on:
     workflow_dispatch:
 
 jobs: 
-  Continous_Deployment:
+  Test:
 
     runs-on: ubuntu-latest
     steps: 
@@ -19,10 +19,24 @@ jobs:
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
 
-      # - name: Get Storage Account Name
-      #   run: cd Terraform-Infrastructure/; echo SAN.txt > 
+      - name: Get Storage Account Name
+        id: storageaccname
+        run: cat Terraform-Infrastructure/storageaccname.txt
 
-      # - name: Terraform Intializes
-      #   run: -backend-config="storage_account_name=$SAN" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name =$PAK" -backend-config="key=$key"
+      - name: Terraform Intializes
+        run: terraform init -backend-config="storage_account_name="${{ steps.storageaccname.outputs.* }}"" -backend-config="container_name="remotestatecontainer"" -backend-config="resource_group_name="rt-infra"" -backend-config="key="terraform.tfstate""
+      
+      - name: Terraform FMT
+        run: terraform fmt
+
+      - name: Terraform Plan
+        run: terraform plan
+      
+  Deploy: 
+    runs_on: ubuntu-latest
+      
+      - name: Terraform Apply
+        run: terraform apply
+
 
 

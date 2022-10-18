@@ -20,7 +20,7 @@ terraform output -raw primaryaccesskey > primaryaccessskey.txt
 $SAN = (Get-Content ./storageaccname.txt).ForEach({ '"{0}"' -f $_ })
 $SCA = (Get-Content ./storagecontname.txt).ForEach({ '"{0}"' -f $_ })
 $PAK = (Get-Content ./primaryaccessskey.txt).ForEach({ '"{0}"' -f $_ })
-$key = "terraform.tfstate"
+$KEY = "terraform.tfstate"
 #Formats and initializes the variables used in the migration process from local to azurerm 
 
 
@@ -30,7 +30,7 @@ terraform init -migrate-state `
 -backend-config="storage_account_name=$SAN" `
 -backend-config="container_name=$SCA" `
 -backend-config="access_key=$PAK" `
--backend-config="key=$key"
+-backend-config="key=$KEY"
 
 
 #Initiates the migration & Configuring backend via the variables defined earlier

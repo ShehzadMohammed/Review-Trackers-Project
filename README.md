@@ -7,7 +7,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 - Continuous-Deployment: Continuously applies terraform code 
 - Terraform-Destroy: Only on manual trigger kills the environment 
 
-<span style="font-variant:small-caps;"> P.s. Realized there was python file given after writing a python file :) ~ and decided not to use modules like Flask or Django to make it more difficult for myself  </span>
+###### `^^ P.s. Realized there was python file given after writing a python file :) ~ and decided not to use modules like Flask or Django to make it more difficult for myself  ^^`
 
 ## Table of Contents
 
