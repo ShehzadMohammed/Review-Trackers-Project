@@ -8,6 +8,8 @@ No requirements.
 
 ## Providers
 
+terraform version 1.3.2
+
 azurerm version 3.13.0
 
 local version 2.2.3
