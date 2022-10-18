@@ -49,9 +49,9 @@ jobs:
         working-directory: Terraform-Infrastructure/
         run: |
           terraform init -migrate-state \
-          -backend-config="storage_account_name=${{ env.SAN }" \
-          -backend-config="container_name=${{ env.SCA }" \
-          -backend-config="access_key=${{ env.PAK }" \
+          -backend-config="storage_account_name=${{ env.SAN }}" \
+          -backend-config="container_name=${{ env.SCA }}" \
+          -backend-config="access_key=${{ env.PAK }}" \
           -backend-config="key=${{ env.KEY }}"; \
           terraform plan; \
           terraform apply --auto-approve
