@@ -51,14 +51,18 @@ jobs:
         run: |
           az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
+      - name: Get Storage Account Name
+        id: storageaccname
+        run: cat Terraform-Infrastructure/storageaccname.txt
+
       - name: Move Terraform State to Storage Account
         working-directory: Terraform-Infrastructure/
         run: |
           terraform init -migrate-state \
-          -backend-config="storage_account_name=${{ env.SAN }}" \
-          -backend-config="container_name=${{ env.SCA }}" \
+          -backend-config="storage_account_name=${{ steps.storageaccname.outputs.* }}" \
+          -backend-config="container_name="remotestatecontainer"" \
           -backend-config="resource_group_name="rt-infra"" \
-          -backend-config="key=${{ env.KEY }}"; \
+          -backend-config="key=terraform.tfstate"; \
           terraform plan; \
           terraform apply --auto-approve
 
@@ -67,7 +71,7 @@ jobs:
         id: latest_tag
         uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
         with:
-          org: ${{ secrets.DOCKERHUB_USERNAME }}
+          org: shehzadmohammed
           repo: "review_trackers_project"
 
       - name: KeywordReplace For Kubernetes
@@ -108,5 +112,3 @@ jobs:
 
       - name: pushing changes
         run: git push origin main"
-
-        # Granular Deployment
