@@ -69,7 +69,7 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
   nat_gateway_id      = azurerm_nat_gateway.gw_aks.id
   public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
   depends_on = [
-    azurerm_resource_group.aks_cluster_group,
+    azurerm_resource_group.aks_resource_group,
     azurerm_nat_gateway.gw_aks,
     azurerm_public_ip_prefix.nat_prefix
   ]
@@ -80,7 +80,7 @@ resource "azurerm_subnet_nat_gateway_association" "cluster_nat_gw" {
   subnet_id      = azurerm_subnet.aks_default_subnet.id
   nat_gateway_id = azurerm_nat_gateway.gw_aks.id
   depends_on = [
-    azurerm_resource_group.aks_cluster_group,
+    azurerm_resource_group.aks_resource_group,
     azurerm_subnet.aks_default_subnet,
     azurerm_nat_gateway.gw_aks
   ]
@@ -97,7 +97,7 @@ resource "azurerm_lb" "external_lb" {
     public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
   }
   depends_on = [
-    azurerm_resource_group.aks_cluster_group,
+    azurerm_resource_group.aks_resource_group,
     azurerm_public_ip_prefix.nat_prefix
   ]
   tags = {
@@ -113,7 +113,7 @@ resource "azurerm_lb_rule" "external_lb_rules" {
   backend_port                   = 30201
   frontend_ip_configuration_name = "ip_conf"
   depends_on = [
-    azurerm_resource_group.aks_cluster_group,
+    azurerm_resource_group.aks_resource_group,
     azurerm_lb.external_lb
   ]
 }
