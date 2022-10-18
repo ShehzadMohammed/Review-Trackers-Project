@@ -49,8 +49,7 @@ jobs:
       - name: Az login via cli
         if: always()
         run: |
-          az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}; \
-          az aks get-credentials -n aks-with-nat-gateway -g rg-aks-with-nat
+          az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
       - name: Move Terraform State to Storage Account
         working-directory: Terraform-Infrastructure/
@@ -64,6 +63,7 @@ jobs:
           terraform apply --auto-approve
 
       - name: Get latest tag
+        if: always()
         id: latest_tag
         uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
         with:
@@ -71,6 +71,7 @@ jobs:
           repo: "review_trackers_project"
 
       - name: KeywordReplace For Kubernetes
+        if: always()
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["/Kubernetes/deployment.yaml"]'

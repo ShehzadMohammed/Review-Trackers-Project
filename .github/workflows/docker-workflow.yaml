@@ -33,7 +33,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
+      - name: Docker Scan
+        working-directory: Python-Server
+        run: Docker Scan .
       - name: Docker Metadata
         id: data
         uses: docker/metadata-action@v4.1.0
