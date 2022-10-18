@@ -34,7 +34,7 @@ resource "azurerm_public_ip_prefix" "nat_prefix" {
   resource_group_name = azurerm_resource_group.aks_resource_group.name
   location            = azurerm_resource_group.aks_resource_group.location
   ip_version          = "IPv4"
-  prefix_length       = 29
+  prefix_length       = 31
   sku                 = "Standard"
   zones               = ["1"]
 
@@ -90,12 +90,11 @@ resource "azurerm_lb_rule" "external_lb_rules" {
 
 # AkS Cluster
 resource "azurerm_kubernetes_cluster" "rt_aks" {
-  name                = var.aks_cluster_name
-  location            = azurerm_resource_group.aks_resource_group.location
-  resource_group_name = azurerm_resource_group.aks_resource_group.name
-  dns_prefix          = var.aks_cluster_name
-  node_resource_group = var.node_resource_group_name
-  # zones                            = [1, 2, 3]
+  name                             = var.aks_cluster_name
+  location                         = azurerm_resource_group.aks_resource_group.location
+  resource_group_name              = azurerm_resource_group.aks_resource_group.name
+  dns_prefix                       = var.aks_cluster_name
+  node_resource_group              = var.node_resource_group_name
   kubernetes_version               = var.kubernetes_version
   http_application_routing_enabled = true
   tags = {
@@ -110,6 +109,7 @@ resource "azurerm_kubernetes_cluster" "rt_aks" {
     vnet_subnet_id      = azurerm_subnet.aks_default_subnet.id
     zones               = [1, 2, 3]
     enable_auto_scaling = false
+
   }
 
   identity {
@@ -119,6 +119,7 @@ resource "azurerm_kubernetes_cluster" "rt_aks" {
   network_profile {
     network_plugin    = "kubenet"
     load_balancer_sku = "standard"
+    outbound_type     = "userAssignedNATGateway"
   }
 }
 # Storage Account for State
