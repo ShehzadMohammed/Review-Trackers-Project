@@ -142,7 +142,6 @@ resource "azurerm_kubernetes_cluster" "rt_aks" {
     node_count          = var.number_of_nodes
     vm_size             = "Standard_B2s"
     type                = "VirtualMachineScaleSets"
-    vnet_subnet_id      = azurerm_subnet.aks_default_subnet.id
     zones               = [1, 2, 3]
     enable_auto_scaling = false
 
