@@ -96,6 +96,9 @@ resource "azurerm_lb" "external_lb" {
     name                = "ip_conf"
     public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
   }
+  frontend_ip_configuration {
+    name = "ip_conf"
+  }
   depends_on = [
     azurerm_resource_group.aks_resource_group,
     azurerm_public_ip_prefix.nat_prefix
@@ -105,7 +108,7 @@ resource "azurerm_lb" "external_lb" {
     Stage = "Deployment"
   }
 }
-resource "azurerm_lb_rule" "external_lb_rules" {
+resource "azurerm_lb_nat_rule" "external_lb_rules" {
   loadbalancer_id                = azurerm_lb.external_lb.id
   name                           = "Access"
   protocol                       = "Tcp"
