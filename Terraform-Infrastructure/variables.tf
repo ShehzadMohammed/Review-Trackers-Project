@@ -7,8 +7,8 @@ variable "aks_resource_group_name" {
 }
 variable "aks_cluster_name" {
   type        = string
-  default     = "rtkube-node-group"
-  description = "Defines the name of the resource group containing Nodes for the AKS cluster"
+  default     = "__AKS_CLUSTER_NAME__"
+  description = "Defines Cluster Name"
 }
 variable "kubernetes_version" {
   type        = string
@@ -17,8 +17,8 @@ variable "kubernetes_version" {
 }
 variable "node_resource_group_name" {
   type        = string
-  default     = "__NODE_RESOURCE_GROUP_NAME__"
-  description = "Defines Cluster Name"
+  default     = "rtkube-node-group"
+  description = "Defines the name of the resource group containing Nodes for the AKS cluster"
 }
 variable "number_of_nodes" {
   type        = number

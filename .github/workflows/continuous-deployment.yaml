@@ -11,6 +11,7 @@ on:
 jobs: 
   Continous_Deployment:
   
+    runs-on: ubuntu-latest
     steps: 
       - name: Checkout
         uses: actions/checkout@v3
