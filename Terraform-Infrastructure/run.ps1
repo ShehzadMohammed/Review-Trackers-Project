@@ -39,8 +39,8 @@ terraform plan
 terraform apply --auto-approve
 #Finishes the process with the new backend in azure storage account...
 Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-(Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
-(Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
+# (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
+# (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
 #This removes the unnecessary files from the local environment
 #Two changes over the lifecyle of this script
 ### NOTE : we can still can use the variables defined in powershell if need be. 
