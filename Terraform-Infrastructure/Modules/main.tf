@@ -1,13 +1,13 @@
-# resource "azurerm_resource_group" "aks_resource_group" {
-#   provider = azurerm
-#   name     = var.aks_resource_group_name
-#   location = var.resource_group_location
-# }
-resource "azurerm_resource_group" "node_resource_group" {
+resource "azurerm_resource_group" "aks_resource_group" {
   provider = azurerm
-  name     = var.node_resource_group_name
+  name     = var.aks_resource_group_name
   location = var.resource_group_location
 }
+# resource "azurerm_resource_group" "node_resource_group" {
+#   provider = azurerm
+#   name     = var.node_resource_group_name
+#   location = var.resource_group_location
+# }
 # AKS Cluster
 resource "azurerm_kubernetes_cluster" "rt_aks" {
   name                = var.aks_cluster_name
