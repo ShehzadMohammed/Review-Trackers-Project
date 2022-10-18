@@ -21,11 +21,11 @@ resource "azurerm_resource_group" "resource_group" {
 # # AKS Cluster
 
 resource "azurerm_kubernetes_cluster" "rt_aks" {
-  name                             = var.aks_cluster_name
-  location                         = azurerm_resource_group.resource_group.location
-  resource_group_name              = azurerm_resource_group.resource_group.name
-  dns_prefix                       = var.aks_cluster_name
-  zones                            = [1, 2, 3]
+  name                = var.aks_cluster_name
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  dns_prefix          = var.aks_cluster_name
+  # zones                            = [1, 2, 3]
   kubernetes_version               = var.kubernetes_version
   http_application_routing_enabled = true
   tags = {
