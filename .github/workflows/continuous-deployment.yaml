@@ -10,10 +10,19 @@ on:
 
 jobs: 
   Continous_Deployment:
-  
+
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Intializes Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      # - name: Get Storage Account Name
+      #   run: cd Terraform-Infrastructure/; echo SAN.txt > 
+
+      # - name: Terraform Intializes
+      #   run: -backend-config="storage_account_name=$SAN" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name =$PAK" -backend-config="key=$key"
 
 
