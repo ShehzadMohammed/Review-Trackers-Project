@@ -1,4 +1,5 @@
 $ErrorActionPreference = "STOP"
+$env:TF_LOG="TRACE"
 Set-Location ./Terraform-Infrastructure
 Get-Date -Format "HHmmMMddyyyy" > dateandtime.txt
 $date = (Get-Content ./dateandtime.txt)

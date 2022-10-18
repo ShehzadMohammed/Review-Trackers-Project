@@ -17,7 +17,7 @@ local version 2.2.3
 ## Inputs
 
 | Name | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+|------|-------------|------|:--------:|
 | aks_cluster_name | string | **ENVIORNMENT VARIABLE** | yes |
 | kubernetes_version | string | 1.25.3 | yes | 
 | number_of_nodes | number | 3 | yes | 
