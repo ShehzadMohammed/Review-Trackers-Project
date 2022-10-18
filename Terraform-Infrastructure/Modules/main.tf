@@ -37,10 +37,7 @@ resource "azurerm_public_ip_prefix" "nat_prefix" {
   prefix_length       = 29
   sku                 = "Standard"
   zones               = ["1"]
-  tags = {
-    Type  = "ProjectDemo"
-    Stage = "Deployment"
-  }
+
 }
 
 # Public NAT Gateway
