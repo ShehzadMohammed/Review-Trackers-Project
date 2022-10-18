@@ -16,13 +16,13 @@ local version 2.2.3
 
 | Name | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aks_cluster_name | string | rt-py-kube | yes |
+| aks_cluster_name | string | **ENVIORNMENT VARIABLE** | yes |
 | kubernetes_version | string | 1.25.3 | yes | 
 | number_of_nodes | number | 3 | yes | 
 | resource_group_location | string | East US 2 | yes |
-| resource_group_name | string | rt-infra | yes | 
+| resource_group_name | string | **ENVIORNMENT VARIABLE** | yes | 
 | storage_container_name | string | remotestatecontainer | yes | 
-| stroage_account_name | string | "" | yes | 
+| stroage_account_name | string | autoupdates with date  | yes | 
 
 ## Outputs 
 

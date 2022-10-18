@@ -1,0 +1,72 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 
+      - 'Kubernetes/**'
+      - 'Terraform-Infrastructure/**'
+      - '.github/workflows/docker-workflow.yaml'
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+      - 'Kubernetes/**'
+      - 'Terraform-Infrastructure/**'
+      - '.github/workflows/docker-workflow.yaml'
+jobs:
+  Terraform_And_Kubernetes:
+    
+    runs-on: ubuntu-latest
+    env: 
+      ARM_CLIENT_ID: ${{ secret.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secret.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secret.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secret.ARM_TENANT_ID }}
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Intializes Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: KeywordReplace For Terraform 
+        uses: cschleiden/replace-tokens@v1
+        with: 
+          files: '["Terraform-Infrastructure/variables.tf"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env:
+          AKS_CLUSTER_NAME: rtpykube
+          RESOURCE_GROUP_NAME: rt-infra
+
+      - name: Powershell Script Terraform
+        working-directory: Terraform-Infrastructure/
+        shell: pwsh
+        run: run.ps1
+
+      - name: Get latest tag
+        id: latest_tag
+        uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
+        with:
+          org: ${{ secret.DOCKERHUB_USERNAME}}
+          repo: 'review_trackers_project'
+
+      - name: KeywordReplace For Kubernetes
+        uses: cschleiden/replace-tokens@v1
+        with: 
+          files: '["/Kubernetes/deployment.yaml"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env: 
+          REPOSITORY: ${{ secret.DOCKERHUB_USERNAME}}
+          IMAGE_NAME: review_trackers_project
+          TAG: ${{ steps.latest_tag.outputs.tag }}
+
+      - name: AKS Context
+      - uses: azure/aks-set-context@v3
+        with:
+          resource-group: '<resource group name>'
+          cluster-name: '<cluster name>'
+      
+
+

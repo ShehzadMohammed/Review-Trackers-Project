@@ -1,8 +1,11 @@
 $ErrorActionPreference = "STOP"
-param ($param1)
+Get-Date -Format "HHmmMMddyyyy" > don.txt
+$date = (Get-Content ./don.txt).ForEach({ { 0 } -f $_ })
+$stringappend = "rtpystorage"
+$paramforstr = $stringappend + $date
 #Takes Parameter1 for Storage Account Name
 
-(Get-Content ./variables.tf).Replace('replace-variable', $param1) | Set-Content ./variables.tf #This sets the variable to the input given
+(Get-Content ./variables.tf).Replace('replace-variable', $paramforstr) | Set-Content ./variables.tf #This sets the variable to the input given
 
 terraform init
 terraform plan 
@@ -13,7 +16,7 @@ terraform output -raw storagecontname > SCA.txt
 terraform output -raw PAK > PAK.txt
 #Builds TF and outputs certain data to txt files
 
-
+$date = (Get-Content ./don.txt).ForEach({ '"{0}"' -f $_ })
 
 # $SAS = (Get-Content ./SAStoken.txt).ForEach({ '"{0}"' -f $_ })
 $SAN = (Get-Content ./SAN.txt).ForEach({ '"{0}"' -f $_ })
@@ -36,7 +39,7 @@ terraform plan
 terraform apply --auto-approve
 #Finishes the process with the new backend in azure storage account...
 Remove-Item SAN.txt, SCA.txt, SAStoken.txt, PAK.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-(Get-Content ./variables.tf).Replace($storageName, 'generic') | Set-Content ./variables.tf
+(Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
 (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
 #This removes the unnecessary files from the local environment
 #Two changes over the lifecyle of this script

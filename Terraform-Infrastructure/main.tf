@@ -5,4 +5,6 @@ module "rt_py_kubedeployment" {
   kubernetes_version      = var.kubernetes_version
   number_of_nodes         = var.number_of_nodes
   aks_cluster_name        = var.aks_cluster_name
+  storage_remote_name     = var.storage_remote_name
+  storage_container_name  = var.storage_container_name
 }

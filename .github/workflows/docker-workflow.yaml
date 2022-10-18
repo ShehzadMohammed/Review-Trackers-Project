@@ -57,6 +57,13 @@ jobs:
           push: ${{ github.event_name != 'pull_request'}}
           tags: ${{ steps.data.outputs.tags }}
           labels: ${{ steps.data.outputs.label}}
+      # - name: ExportsTag
+      #   uses: DamianReeves/write-file-action@master
+      #   with:
+      #     path: Python-Server/tag-value
+      #     content: |
+      #       ${{ steps.data.outputs.tags }}
+      #     write-mode: overwrite
       # - name: Run Trivy vulnerability scanner
       #   uses: aquasecurity/trivy-action@master
       #   with: 

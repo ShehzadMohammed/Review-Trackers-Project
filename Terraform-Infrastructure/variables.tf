@@ -2,7 +2,7 @@
 # Sorted A - Z
 variable "aks_cluster_name" {
   type        = string
-  default     = "rt-py-kube"
+  default     = __AKS_CLUSTER_NAME__
   description = "Defines Cluster Name"
 }
 variable "kubernetes_version" {
@@ -22,7 +22,7 @@ variable "resource_group_location" {
 }
 variable "resource_group_name" {
   type        = string
-  default     = "rt-infra"
+  default     = __RESOURCE_GROUP_NAME__
   description = "Defines the name of the resource group containing AKS cluster"
 }
 variable "storage_container_name" {

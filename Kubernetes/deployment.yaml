@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rt-py
-          image: __Repository__/__Image_Name__:__Tag__
+          image: __REPOSITORY__/__IMAGE_NAME__:__TAG__
           ports:
             - containerPort: 80
           resources:
