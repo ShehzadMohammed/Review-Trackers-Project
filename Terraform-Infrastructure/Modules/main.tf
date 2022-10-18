@@ -109,6 +109,7 @@ resource "azurerm_lb" "external_lb" {
   }
 }
 resource "azurerm_lb_nat_rule" "external_lb_rules" {
+  resource_group_name            = azurerm_resource_group.aks_resource_group.name
   loadbalancer_id                = azurerm_lb.external_lb.id
   name                           = "Access"
   protocol                       = "Tcp"
