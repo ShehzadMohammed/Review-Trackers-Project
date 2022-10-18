@@ -9,7 +9,7 @@ on:
     workflow_dispatch:
 
 jobs: 
-  Test:
+  Deployment:
 
     runs-on: ubuntu-latest
     steps: 
@@ -26,15 +26,12 @@ jobs:
       - name: Terraform Intializes
         run: terraform init -backend-config="storage_account_name="${{ steps.storageaccname.outputs.* }}"" -backend-config="container_name="remotestatecontainer"" -backend-config="resource_group_name="rt-infra"" -backend-config="key="terraform.tfstate""
       
-      - name: Terraform FMT
+      - name: Terraform fmt
         run: terraform fmt
 
       - name: Terraform Plan
         run: terraform plan
-      
-  Deploy: 
-    runs_on: ubuntu-latest
-      
+    
       - name: Terraform Apply
         run: terraform apply
 

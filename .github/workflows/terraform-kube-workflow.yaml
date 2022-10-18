@@ -64,11 +64,13 @@ jobs:
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
+        if: always()
         with:
           resource-group: ${{  env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
 
       - name: AKS Deployment
+        if: always()
         uses: Azure/k8s-deploy@v3.1
         with:
           manifest: | 
