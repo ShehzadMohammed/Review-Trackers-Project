@@ -8,10 +8,13 @@ on:
       - "Terraform-Infrastructure/**.ps1"
 
   workflow_dispatch:
-
+permissions:
+  id-token: write
+  contents: read
 jobs:
   Terraform_And_Kubernetes:
     runs-on: ubuntu-latest
+
     env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
