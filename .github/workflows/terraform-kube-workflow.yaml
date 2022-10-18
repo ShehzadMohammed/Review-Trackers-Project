@@ -40,9 +40,9 @@ jobs:
           RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
 
       - name: Powershell Script Terraform
-        working-directory: Terraform-Infrastructure/
+        # working-directory: Terraform-Infrastructure/
         shell: pwsh
-        run: run.ps1
+        run: ./Terraform-Infrastructure/run.ps1
 
       - name: Get latest tag
         id: latest_tag
