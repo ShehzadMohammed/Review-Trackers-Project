@@ -2,18 +2,17 @@ name: Intial Deployment
 
 on:
   push:
-    branches: [ "main" ]
-    paths: 
-      - '.github/workflows/terraform-kube-workflow.yaml'
-      - 'Terraform-Infrastructure/**.ps1'
+    branches: ["main"]
+    paths:
+      - ".github/workflows/terraform-kube-workflow.yaml"
+      - "Terraform-Infrastructure/**.ps1"
 
   workflow_dispatch:
 
 jobs:
   Terraform_And_Kubernetes:
-
     runs-on: ubuntu-latest
-    env: 
+    env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -21,17 +20,16 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
 
-
-      - name: KeywordReplace For Terraform 
+      - name: KeywordReplace For Terraform
         uses: cschleiden/replace-tokens@v1
-        with: 
+        with:
           files: '["Terraform-Infrastructure/variables.tf"]'
           tokenPrefix: __
           tokenSuffix: __
@@ -49,18 +47,26 @@ jobs:
         uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
         with:
           org: ${{ secrets.DOCKERHUB_USERNAME }}
-          repo: 'review_trackers_project'
+          repo: "review_trackers_project"
 
       - name: KeywordReplace For Kubernetes
         uses: cschleiden/replace-tokens@v1
-        with: 
+        with:
           files: '["/Kubernetes/deployment.yaml"]'
           tokenPrefix: __
           tokenSuffix: __
-        env: 
+        env:
           REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME}}
           IMAGE_NAME: review_trackers_project
           TAG: ${{ steps.latest_tag.outputs.tag }}
+
+      - name: Az Login
+        uses: azure/login@v1
+        if: always()
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id:
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
@@ -68,12 +74,13 @@ jobs:
         with:
           resource-group: ${{  env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
+          suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: AKS Deployment
         if: always()
         uses: Azure/k8s-deploy@v3.1
         with:
-          manifest: | 
+          manifest: |
             Kubernetes/deployment.yaml 
             Kubernetes/service.yaml
 
@@ -87,4 +94,3 @@ jobs:
         run: git push origin main"
 
         # Granular Deployment
-
