@@ -67,6 +67,12 @@ jobs:
         with:
           resource-group: ${{  env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
-      
 
+      - name: AKS Deployment
+        uses: Azure/k8s-deploy@v3.1
+        with:
+          manifest: | 
+            Kubernetes/deployment.yaml 
+            Kubernetes/service.yaml
+        # Granular Deployment
 

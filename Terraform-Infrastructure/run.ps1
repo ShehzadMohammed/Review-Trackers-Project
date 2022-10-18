@@ -13,7 +13,7 @@ terraform plan
 terraform apply --auto-approve
 terraform output -raw storageaccname > storageaccname.txt
 terraform output -raw storagecontname > storagecontname.txt
-terraform output -raw primaryaccessskey > primaryaccessskey.txt
+terraform output -raw primaryaccesskey > primaryaccessskey.txt
 #Builds TF and outputs certain data to txt files
 
 # $SAS = (Get-Content ./SAStoken.txt).ForEach({ '"{0}"' -f $_ })
