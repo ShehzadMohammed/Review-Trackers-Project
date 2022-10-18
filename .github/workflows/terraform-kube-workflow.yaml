@@ -55,7 +55,7 @@ jobs:
         id: storageaccname
         run: |
           value=`cat Terraform-Infrastructure/storageaccname.txt`; \
-          echo "::set-output name=storageaccname::$output"
+          echo "::set-output name=storageaccname::$value"
 
       - name: Move Terraform State to Storage Account
         working-directory: Terraform-Infrastructure/
@@ -69,6 +69,7 @@ jobs:
           terraform apply --auto-approve
 
       - name: KeywordReplace For Kubernetes
+        if: always()
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["**/*.yaml"]'
