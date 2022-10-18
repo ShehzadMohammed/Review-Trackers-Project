@@ -62,10 +62,6 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
 resource "azurerm_subnet_nat_gateway_association" "cluster_nat_gw" {
   subnet_id      = azurerm_subnet.aks_default_subnet.id
   nat_gateway_id = azurerm_nat_gateway.gw_aks.id
-  tags = {
-    Type  = "ProjectDemo"
-    Stage = "Deployment"
-  }
 }
 
 # Load Balncer and Rules for Security and Access
