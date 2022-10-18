@@ -1,18 +1,17 @@
 name: Continuous Deployment
 on:
   push:
-    branches: [ "main" ]
-    paths: 
-      - 'Terraform-Infrastructure/**.tf'
-      - 'Kubernetes/**'
+    branches: ["main"]
+    paths:
+      - "Terraform-Infrastructure/**.tf"
+      - "Kubernetes/**.yaml"
 
-    workflow_dispatch:
+  workflow_dispatch:
 
-jobs: 
+jobs:
   Deployment:
-
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -25,15 +24,31 @@ jobs:
 
       - name: Terraform Intializes
         run: terraform init -backend-config="storage_account_name="${{ steps.storageaccname.outputs.* }}"" -backend-config="container_name="remotestatecontainer"" -backend-config="resource_group_name="rt-infra"" -backend-config="key="terraform.tfstate""
-      
+
       - name: Terraform fmt
         run: terraform fmt
 
       - name: Terraform Plan
         run: terraform plan
-    
+
       - name: Terraform Apply
-        run: terraform apply
+        run: terraform apply --auto-approve
 
+      - name: Az login via cli
+        if: always()
+        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
+      - name: AKS Context
+        uses: azure/aks-set-context@v3
+        if: always()
+        with:
+          resource-group: ${{  env.RESOURCE_GROUP_NAME }}
+          cluster-name: ${{  env.AKS_CLUSTER_NAME }}
+          suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+      - name: AKS Deployment
+        if: always()
+        uses: Azure/k8s-deploy@v3.1
+        with:
+          manifests: |
+            Kubernetes/**.yaml

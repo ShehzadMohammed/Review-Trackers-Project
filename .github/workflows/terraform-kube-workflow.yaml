@@ -45,6 +45,17 @@ jobs:
         shell: pwsh
         run: ./Terraform-Infrastructure/run.ps1
 
+      - name: Move Terraform State to Storage Account
+        working-directory: Terraform-Infrastructure/
+        run: |
+          terraform init -migrate-state \
+          -backend-config="storage_account_name=${{ env.SAN }" \
+          -backend-config="container_name=${{ env.SCA }" \
+          -backend-config="access_key=${{ env.PAK }" \
+          -backend-config="key=${{ env.KEY }}"; \
+          terraform plan; \
+          terraform apply --auto-approve
+
       - name: Get latest tag
         id: latest_tag
         uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
@@ -65,7 +76,9 @@ jobs:
 
       - name: Az login via cli
         if: always()
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+        run: |
+          az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}; \
+          az aks get-credentials -n aks-with-nat-gateway -g rg-aks-with-nat
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
@@ -79,7 +92,7 @@ jobs:
         if: always()
         uses: Azure/k8s-deploy@v3.1
         with:
-          manifest: |
+          manifests: |
             Kubernetes/deployment.yaml 
             Kubernetes/service.yaml
 
