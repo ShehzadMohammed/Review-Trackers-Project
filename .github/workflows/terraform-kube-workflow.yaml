@@ -15,7 +15,8 @@ permissions:
 jobs:
   Terraform_And_Kubernetes:
     runs-on: ubuntu-latest
-
+    outputs:
+      storageaccname: ${{ steps.storageaccname.outputs.strname }}
     env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
@@ -48,43 +49,35 @@ jobs:
 
       - name: Az login via cli
         if: always()
-        run: |
-          az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
       - name: Get Storage Account Name
         id: storageaccname
-        run: cat Terraform-Infrastructure/storageaccname.txt
+        run: |
+          cat Terraform-Infrastructure/storageaccname.txt >> $output; \
+          echo "::set-output name=storageaccname::$output"
 
       - name: Move Terraform State to Storage Account
         working-directory: Terraform-Infrastructure/
         run: |
           terraform init -migrate-state \
-          -backend-config="storage_account_name=${{ steps.storageaccname.outputs.* }}" \
+          -backend-config="storage_account_name=${{ steps.storageaccname.outputs.storageaccname }}" \
           -backend-config="container_name="remotestatecontainer"" \
           -backend-config="resource_group_name="rt-infra"" \
           -backend-config="key=terraform.tfstate"; \
           terraform plan; \
           terraform apply --auto-approve
 
-      - name: Get latest tag
-        if: always()
-        id: latest_tag
-        uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
-        with:
-          org: shehzadmohammed
-          repo: "review_trackers_project"
-
       - name: KeywordReplace For Kubernetes
-        if: always()
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["/Kubernetes/deployment.yaml"]'
+          files: '["**/*.yaml"]'
           tokenPrefix: __
           tokenSuffix: __
         env:
           REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME}}
           IMAGE_NAME: review_trackers_project
-          TAG: ${{ steps.latest_tag.outputs.tag }}
+          TAG: main
 
       - name: AKS Context
         uses: azure/aks-set-context@v3

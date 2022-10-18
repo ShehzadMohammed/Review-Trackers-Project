@@ -31,8 +31,15 @@ The python directory contains a python file that launches a HHTP server with two
 
 ## Terraform
 
+The module directory is used to provision AKS cluster for the python app and storage account for the tfstate file to migrate into and point the terraform backend script to. It creates a container in the storage account for the tfstate file. We can create a nested module here to create multiple containers as needed for future tfstate files for different azure landing zones. The one cycle of terraform provisioning and initializes environmental variables and storage account name based on date and time. The second script runs within the runner as bash as the second cycle of terraform provisioning. The first cycle will create the storage account and a SAS token which will be a fall back incase the primary access key does not work. The second cycle will migrate the backend to the newly created storage account therefore isolating the whole environment on the infrastructure itself. The AKS cluster is managed by azure due to the time crunch. 
+
+### improvements
+- AKS cluster should be self managed with better security in more sophisticated clusters. In this case, it is completely okay to use managed cluster since this is a very preliminary interview project. 
+- The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   
 
 ## Kubernetes
+- At the inception of this project, the plan comprised of end-to-end observability, tests, and scans ~ however, it proved too out of the scope for this project 
+
 ## Workflows
 ## Requirements
 ## Improvements
