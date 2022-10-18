@@ -26,10 +26,6 @@ resource "azurerm_subnet" "aks_default_subnet" {
   virtual_network_name = azurerm_virtual_network.aks_vnet.name
   resource_group_name  = azurerm_resource_group.aks_resource_group.name
   address_prefixes     = ["10.240.0.0/16"]
-  tags = {
-    Type  = "ProjectDemo"
-    Stage = "Deployment"
-  }
 }
 
 # Public IP Prefix
@@ -63,10 +59,6 @@ resource "azurerm_nat_gateway" "gw_aks" {
 resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
   nat_gateway_id      = azurerm_nat_gateway.gw_aks.id
   public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
-  tags = {
-    Type  = "ProjectDemo"
-    Stage = "Deployment"
-  }
 }
 
 # Assigning NAT Gateway to Subnet
@@ -85,7 +77,10 @@ resource "azurerm_lb" "external_lb" {
   location            = azurerm_resource_group.aks_resource_group.location
   resource_group_name = azurerm_resource_group.aks_resource_group.name
   sku                 = "Standard"
-  public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
+  frontend_ip_configuration {
+    name                = "ip_conf"
+    public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix.id
+  }
   tags = {
     Type  = "ProjectDemo"
     Stage = "Deployment"
