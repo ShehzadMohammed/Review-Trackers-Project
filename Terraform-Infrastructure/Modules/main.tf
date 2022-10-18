@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_resource_group" {
     Stage = "Deployment"
   }
 }
-# ** DECIDED TO USE MANAGED KUBERNETES NETWORKING WAS TAKING TOO LONG! 
+# ** DECIDED TO USE MANAGED KUBERNETES NETWORKING USING SELF-MANAGED KUBERNETES NETWORKING IS NOT TIME EFFECTIVE! 
 # AKS Virtual Network
 # resource "azurerm_virtual_network" "aks_vnet" {
 #   name                = "rt_network"
