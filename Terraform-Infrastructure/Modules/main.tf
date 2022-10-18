@@ -85,7 +85,7 @@ resource "azurerm_lb_rule" "external_lb_rules" {
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 30201
-  frontend_ip_configuration_name = "PublicIPAddress"
+  frontend_ip_configuration_name = "ip_conf"
 }
 
 # AkS Cluster
