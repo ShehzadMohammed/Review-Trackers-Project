@@ -6,7 +6,7 @@ on:
     paths: 
       - 'Kubernetes/**'
       - 'Terraform-Infrastructure/**'
-      - '.github/workflows/docker-workflow.yaml'
+      - '.github/workflows/terraform-kube-workflow.yaml'
 
   workflow_dispatch:
 
