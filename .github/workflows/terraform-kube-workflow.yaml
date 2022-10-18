@@ -48,7 +48,7 @@ jobs:
         id: latest_tag
         uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.1
         with:
-          org: ${{ secret.DOCKERHUB_USERNAME }}
+          org: ${{ secrets.DOCKERHUB_USERNAME }}
           repo: 'review_trackers_project'
 
       - name: KeywordReplace For Kubernetes
@@ -58,7 +58,7 @@ jobs:
           tokenPrefix: __
           tokenSuffix: __
         env: 
-          REPOSITORY: ${{ secret.DOCKERHUB_USERNAME}}
+          REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME}}
           IMAGE_NAME: review_trackers_project
           TAG: ${{ steps.latest_tag.outputs.tag }}
 
