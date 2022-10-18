@@ -1,8 +1,8 @@
-resource "azurerm_resource_group" "aks_resource_group" {
-  provider = azurerm
-  name     = var.aks_resource_group_name
-  location = var.resource_group_location
-}
+# resource "azurerm_resource_group" "aks_resource_group" {
+#   provider = azurerm
+#   name     = var.aks_resource_group_name
+#   location = var.resource_group_location
+# }
 resource "azurerm_resource_group" "node_resource_group" {
   provider = azurerm
   name     = var.node_resource_group_name
