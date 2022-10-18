@@ -1,14 +1,24 @@
 # Dependency Injection Principle 
 # Sorted A - Z
+variable "aks_resource_group_name" {
+  type        = string
+  default     = "__RESOURCE_GROUP_NAME__"
+  description = "Defines the name of the resource group containing AKS cluster"
+}
 variable "aks_cluster_name" {
   type        = string
-  default     = "__AKS_CLUSTER_NAME__"
-  description = "Defines Cluster Name"
+  default     = "rtkube-node-group"
+  description = "Defines the name of the resource group containing Nodes for the AKS cluster"
 }
 variable "kubernetes_version" {
   type        = string
   default     = "1.24.6"
   description = "Defines Kubernetes Version"
+}
+variable "node_resource_group_name" {
+  type        = string
+  default     = "__NODE_RESOURCE_GROUP_NAME__"
+  description = "Defines Cluster Name"
 }
 variable "number_of_nodes" {
   type        = number
@@ -19,11 +29,6 @@ variable "resource_group_location" {
   type        = string
   default     = "East US"
   description = "Define the location of the resource group containing AKS cluster"
-}
-variable "resource_group_name" {
-  type        = string
-  default     = "__RESOURCE_GROUP_NAME__"
-  description = "Defines the name of the resource group containing AKS cluster"
 }
 variable "storage_container_name" {
   type        = string

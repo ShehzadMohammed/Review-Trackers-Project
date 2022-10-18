@@ -1,14 +1,20 @@
-resource "azurerm_resource_group" "resource_group" {
+resource "azurerm_resource_group" "aks_resource_group" {
   provider = azurerm
-  name     = var.resource_group_name
+  name     = var.aks_resource_group_name
+  location = var.resource_group_location
+}
+resource "azurerm_resource_group" "node_resource_group" {
+  provider = azurerm
+  name     = var.node_resource_group_name
   location = var.resource_group_location
 }
 # AKS Cluster
 resource "azurerm_kubernetes_cluster" "rt_aks" {
   name                = var.aks_cluster_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.aks_resource_group.location
+  resource_group_name = azurerm_resource_group.aks_resource_group.name
   dns_prefix          = var.aks_cluster_name
+  node_resource_group = var.aks_resource_group.name
   # zones                            = [1, 2, 3]
   kubernetes_version               = var.kubernetes_version
   http_application_routing_enabled = true
@@ -37,8 +43,8 @@ resource "azurerm_kubernetes_cluster" "rt_aks" {
 resource "azurerm_storage_account" "remote_state_storage_account" {
   provider                 = azurerm
   name                     = var.storage_remote_name
-  location                 = azurerm_resource_group.resource_group.location
-  resource_group_name      = azurerm_resource_group.resource_group.name
+  location                 = azurerm_resource_group.aks_resource_group.location
+  resource_group_name      = azurerm_resource_group.aks_resource_group.name
   account_tier             = "Standard"
   account_replication_type = "GRS"
 }

@@ -24,7 +24,8 @@ local version 2.2.3
 | resource_group_location | string | East US 2 | yes |
 | resource_group_name | string | **ENVIORNMENT VARIABLE** | yes | 
 | storage_container_name | string | remotestatecontainer | yes | 
-| stroage_account_name | string | autoupdates with date  | yes | 
+| stroage_remote_name | string | autoupdates with date  | yes | 
+| aks_cluster_name | string | rtkube-node-group  | yes | 
 
 ## Outputs 
 

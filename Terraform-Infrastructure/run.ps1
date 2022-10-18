@@ -26,17 +26,13 @@ $key = "terraform.tfstate"
 
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
 #Changes the script backend to azurerm 
-terraform init -migrate-state -force-copy `
-    -backend-config="storage_account_name=$SAN" `
-    -backend-config="container_name=$SCA" `
-    -backend-config="access_key=$PAK" `
-    -backend-config="key=$key"
+terraform init -migrate-state -force-copy -backend-config="storage_account_name=$SAN" -backend-config="container_name=$SCA" -backend-config="access_key=$PAK" -backend-config="key=$key"
 
 #Initiates the migration & Configuring backend via the variables defined earlier
 terraform plan
 terraform apply --auto-approve
 #Finishes the process with the new backend in azure storage account...
-Remove-Item SAN.txt, SCA.txt, SAStoken.txt, PAK.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
+Remove-Item SAN.txt, PAK.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
 (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
 #This removes the unnecessary files from the local environment

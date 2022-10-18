@@ -7,10 +7,12 @@ on:
       - 'Kubernetes/**'
 
     workflow_dispatch:
-    jobs: 
-      Continous_Deployment:
-        steps: 
-          - name: Checkout
-            uses: actions/checkout@v3
+
+jobs: 
+  Continous_Deployment:
+  
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
 
 
