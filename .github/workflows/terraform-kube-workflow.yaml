@@ -58,12 +58,15 @@ jobs:
           echo "::set-output name=storageaccname::$value"
 
       - name: Move Terraform State to Storage Account
+        env:
+          STORAGE_ACCOUNT = ${{ steps.storageaccname.outputs.storageaccname }}
+          TF_LOG = "trace"
         run: |
           cd Terraform-Infrastructure/; \
           terraform init -migrate-state \
-          -backend-config="storage_account_name="${{ steps.storageaccname.outputs.storageaccname }}"" \
-          -backend-config="container_name="remotestatecontainer"" \
-          -backend-config="resource_group_name="rt-infra"" \
+          -backend-config="storage_account_name=$STORAGE_ACCOUNT" \
+          -backend-config="container_name=remotestatecontainer" \
+          -backend-config="resource_group_name=rt-infra" \
           -backend-config="key=terraform.tfstate"; \
           terraform plan; \
           terraform apply --auto-approve
@@ -72,13 +75,13 @@ jobs:
         if: always()
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["**/*.yaml"]'
+          files: '["Kubernetes/deployment.yaml"]'
           tokenPrefix: __
           tokenSuffix: __
         env:
           REPOSITORY: shehzadmohammed
           IMAGE_NAME: review_trackers_project
-          TAG: main
+          TAG: latest
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
@@ -95,8 +98,8 @@ jobs:
           action: deploy
           strategy: basic
           manifests: |
-            Kubernetes/deployment.yaml 
-            Kubernetes/service.yaml
+            Kubernetes/**.yaml 
+            Kubernetes/**.yaml
 
       - name: stage changed files
         run: git add .
