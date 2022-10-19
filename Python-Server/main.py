@@ -32,7 +32,7 @@ class Proc(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(bytes(response_else, 'utf-8'))
 
-pythonserver = HTTPServer(('0.0.0.0', 8090), Proc)
+pythonserver = HTTPServer(('', 8090), Proc)
 print("Server is successfully running... ")
 pythonserver.serve_forever()
 

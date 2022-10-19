@@ -16,7 +16,7 @@ jobs:
   Terraform_And_Kubernetes:
     runs-on: ubuntu-latest
     outputs:
-      storageaccname: ${{ steps.storageaccname.outputs.strname }}
+      STORAGE_VALUE: ${{ steps.STORAGE_STEP.outputs.strname }}
     env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
@@ -45,31 +45,36 @@ jobs:
       - name: Powershell Script Terraform
         # working-directory: Terraform-Infrastructure/
         shell: pwsh
-        run: ./Terraform-Infrastructure/run.ps1
+        run: ./Terraform-Infrastructure/run.ps1; /
+          Write-Output $SAN | Add-Content $GITHUB_ENV
 
       - name: Az login via cli
         if: always()
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Get Storage Account Name
-        id: storageaccname
-        run: |
-          value=`cat Terraform-Infrastructure/storageaccname.txt`; \
-          echo "::set-output name=storageaccname::$value"
-
-      - name: Move Terraform State to Storage Account
+      - name: Backend Migrate
         env:
-          STORAGE_ACCOUNT: ${{ steps.storageaccname.outputs.storageaccname }}
           TF_LOG: "trace"
         run: |
           cd Terraform-Infrastructure/; \
           terraform init -migrate-state \
-          -backend-config="storage_account_name=$STORAGE_ACCOUNT" \
+          -backend-config="storage_account_name=$SAN" \
           -backend-config="container_name=remotestatecontainer" \
           -backend-config="resource_group_name=rt-infra" \
           -backend-config="key=terraform.tfstate"; \
           terraform plan; \
           terraform apply --auto-approve
+
+      # - name: Get Storage Account Name
+      #   id: STORAGE_STEP
+      #   run: |
+      #     value=`cat Terraform-Infrastructure/storageaccname.txt`; \
+      #     echo "::set-output name=STORAGE_VALUE::$value"
+
+      # - name: Move Terraform State to Storage Account
+      #   env:
+      #     STORAGE_ACCOUNT: ${{ steps.STORAGE_STEP.outputs.STORAGE_VALUE }}
+      #     TF_LOG: "trace"
 
       - name: KeywordReplace For Kubernetes
         if: always()
