@@ -5,7 +5,6 @@ metadata:
   labels:
     app: rt-py-deployment
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: rt-py-deployment

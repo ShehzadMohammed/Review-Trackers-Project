@@ -10,14 +10,14 @@ RUN set -eux; \
     mkdir /home/rt-py-user/rt-py-server; 
 
 # Organizing for possible enhancements. 
-WORKDIR /home/rt-py-user/rt-py-server
+WORKDIR /home/rt-py-user/
 # Could be done via remote repository github ssh but unnessary
 COPY ["main.py", "requirements.txt", "./"]
 # Dockerfile Reproducibility
 RUN python -m pip install -r requirements.txt 
 
 USER rt-py-user
-EXPOSE 80/tcp
+EXPOSE 80
 
 ENTRYPOINT [ "python" ]
 # Incase of local unit-test implementation in the future.  
