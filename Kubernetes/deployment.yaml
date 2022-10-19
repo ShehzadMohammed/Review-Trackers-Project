@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: rt-py-deployment
-          image: shehzadmohammed/review_trackers_project:main
+          image: __REPOSITORY__/__IMAGE_NAME__:__TAG__
           ports:
             - containerPort: 20010
           resources:

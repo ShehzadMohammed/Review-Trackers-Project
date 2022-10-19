@@ -38,6 +38,7 @@ The module directory is used to provision AKS cluster for the python app and sto
 ### improvements
 - AKS cluster should be self managed with better security in more sophisticated clusters. In this case, it is completely okay to use managed cluster since this is a very preliminary interview project. 
 - The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   ||| This could also be achieved using self-hosted runners as well. 
+- Artifacts should be created and stored for every terraform cycle.
 
 ## Kubernetes 
 The most simplest Kubernetes cluster implementation. 

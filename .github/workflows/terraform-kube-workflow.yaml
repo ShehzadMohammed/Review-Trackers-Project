@@ -14,8 +14,6 @@ permissions:
 jobs:
   Terraform_And_Kubernetes:
     runs-on: ubuntu-latest
-    outputs:
-      STORAGE_VALUE: ${{ steps.STORAGE_STEP.outputs.strname }}
     env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
@@ -60,7 +58,7 @@ jobs:
         shell: pwsh
         run: |
           cd Terraform-Infrastructure/;
-          $env:SAN = (Get-Content ./storageaccname.txt).ForEach({ '"{0}"' -f $_ }); 
+          $SAN = (Get-Content ./storageaccname.txt); 
           terraform init -migrate-state `
           -backend-config="storage_account_name=$SAN" `
           -backend-config="container_name=remotestatecontainer" `
@@ -69,17 +67,6 @@ jobs:
           terraform plan; 
           terraform apply --auto-approve;
           Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-
-      # - name: Get Storage Account Name
-      #   id: STORAGE_STEP
-      #   run: |
-      #     value=`cat Terraform-Infrastructure/storageaccname.txt`; \
-      #     echo "::set-output name=STORAGE_VALUE::$value"
-
-      # - name: Move Terraform State to Storage Account
-      #   env:
-      #     STORAGE_ACCOUNT: ${{ steps.STORAGE_STEP.outputs.STORAGE_VALUE }}
-      #     TF_LOG: "trace"
 
       - name: KeywordReplace For Kubernetes
         if: always()
