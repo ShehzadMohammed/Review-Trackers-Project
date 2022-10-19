@@ -1,6 +1,6 @@
 # Review-Trackers-Project
 
-#### This Project was LOTS FUN thank you guys so much! Any criticisms and feedback is really appreciated. 
+#### This project was LOTS of FUN! Thank you guys so much! Any criticisms and feedback is really appreciated. 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
 
 ### Description
