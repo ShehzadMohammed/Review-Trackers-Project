@@ -45,7 +45,7 @@ jobs:
       - name: Powershell Script Terraform
         # working-directory: Terraform-Infrastructure/
         shell: pwsh
-        run: ./Terraform-Infrastructure/run.ps1; /
+        run: ./Terraform-Infrastructure/run.ps1; \
           Write-Output "{SAN}={$SAN}" | Add-Content $GITHUB_ENV
 
       - name: Az login via cli
@@ -53,6 +53,7 @@ jobs:
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
       - name: Backend Migrate
+        if: always()
         env:
           TF_LOG: "trace"
         run: |
