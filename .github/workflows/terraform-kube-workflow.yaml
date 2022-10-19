@@ -48,26 +48,29 @@ jobs:
         shell: pwsh
         run: |
           ./Terraform-Infrastructure/run.ps1;
-          Write-Output "{SAN}={$SAN}" | Add-Content $GITHUB_ENV;
-          Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 
       - name: Az login via cli
         if: always()
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
+      - name: Save Storage Account Name
+
       - name: Backend Migrate
         if: always()
         env:
           TF_LOG: "trace"
+        shell: pwsh
         run: |
-          cd Terraform-Infrastructure/; 
-          terraform init -migrate-state 
-          -backend-config="storage_account_name=$SAN" 
-          -backend-config="container_name=remotestatecontainer" 
-          -backend-config="resource_group_name=rt-infra" 
+          cd Terraform-Infrastructure/;
+          $env:SAN = (Get-Content ./storageaccname.txt).ForEach({ '"{0}"' -f $_ }); 
+          terraform init -migrate-state `
+          -backend-config="storage_account_name=$SAN" `
+          -backend-config="container_name=remotestatecontainer" `
+          -backend-config="resource_group_name=rt-infra" `
           -backend-config="key=terraform.tfstate"; 
           terraform plan; 
           terraform apply --auto-approve;
+          Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 
       # - name: Get Storage Account Name
       #   id: STORAGE_STEP
