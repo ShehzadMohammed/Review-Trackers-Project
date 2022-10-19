@@ -1,5 +1,8 @@
 # Review-Trackers-Project
 
+#### This Project was LOTS FUN thank you guys so much! Any criticisms and feedback is really appreciated. 
+###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
+
 ### Description
 Trunk-Based Development in a MonoRepo thus so many testing commits since this is a rushed one-day project. Essentially, we have four workflows ~
 - Docker-workflow: Builds and pushes docker file to a public dockerhub account
@@ -7,7 +10,6 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 - Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. 
 - Terraform-Destroy: Only on manual trigger kills the environment 
 
-###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
 
 
 
@@ -35,7 +37,7 @@ The module directory is used to provision AKS cluster for the python app and sto
 
 ### improvements
 - AKS cluster should be self managed with better security in more sophisticated clusters. In this case, it is completely okay to use managed cluster since this is a very preliminary interview project. 
-- The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   
+- The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   ||| This could also be achieved using self-hosted runners as well. 
 
 ## Kubernetes 
 The most simplest Kubernetes cluster implementation. 
@@ -50,3 +52,5 @@ The most simplest Kubernetes cluster implementation.
 
 ## Requirements
 - All Requirements Met. 
+
+Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed and lots of interruptions throughout the process. 

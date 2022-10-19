@@ -1,10 +1,16 @@
 name: Terraform Destroy
 on:
   workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+  actions: read
 
 jobs:
   Terraform_Destroy:
     runs-on: ubuntu-latest
+    outputs:
+      storageaccname: ${{ steps.storageaccname.outputs.strname }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -14,10 +20,19 @@ jobs:
 
       - name: Get Storage Account Name
         id: storageaccname
-        run: cat Terraform-Infrastructure/storageaccname.txt
+        run: |
+          value=`cat Terraform-Infrastructure/storageaccname.txt`; \
+          echo "::set-output name=storageaccname::$value"
 
       - name: Terraform Intializes
         run: terraform init -backend-config="storage_account_name="${{ steps.storageaccname.outputs.* }}"" -backend-config="container_name="remotestatecontainer"" -backend-config="resource_group_name="rt-infra"" -backend-config="key="terraform.tfstate""
 
       - name: Terraform Destroy
         run: terraform destroy --auto-approve
+
+      - name: Backend Config  Terraform
+        shell: pwsh
+        run: |
+          Set-Location ./Terraform-Infrastructure;
+          (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf;
+          (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf;

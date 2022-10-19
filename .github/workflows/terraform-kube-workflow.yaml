@@ -58,15 +58,14 @@ jobs:
           echo "::set-output name=storageaccname::$value"
 
       - name: Move Terraform State to Storage Account
-        working-directory: Terraform-Infrastructure/
         run: |
-          terraform init -migrate-state \
-          -backend-config="storage_account_name="${{ steps.storageaccname.outputs.storageaccname }}"" \
-          -backend-config="container_name="remotestatecontainer"" \
-          -backend-config="resource_group_name="rt-infra"" \
-          -backend-config="key=terraform.tfstate"; \
-          terraform plan; \
-          terraform apply --auto-approve
+          terraform -chdir=Terraform-Infrastructure/ init -migrate-state
+          -backend-config="storage_account_name="${{ steps.storageaccname.outputs.storageaccname }}""
+          -backend-config="container_name="remotestatecontainer""
+          -backend-config="resource_group_name="rt-infra""
+          -backend-config="key=terraform.tfstate";
+          terraform -chdir=Terraform-Infrastructure/ plan; \
+          terraform -chdir=Terraform-Infrastructure/ apply --auto-approve
 
       - name: KeywordReplace For Kubernetes
         if: always()

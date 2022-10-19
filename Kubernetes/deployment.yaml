@@ -15,14 +15,14 @@ spec:
         app: rt-py-deployment
     spec:
       containers:
-        - name: rt-py
+        - name: rt-py-deployment
           image: __REPOSITORY__/__IMAGE_NAME__:__TAG__
           ports:
             - containerPort: 80
           resources:
             limits:
-              cpu: 300m
-              memory: "100Mi"
+              cpu: 500m
+              memory: "1000Mi"
             requests:
               cpu: 100m
-              memory: "50Mi"
+              memory: "500Mi"
