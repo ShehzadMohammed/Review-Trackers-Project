@@ -46,7 +46,7 @@ jobs:
         # working-directory: Terraform-Infrastructure/
         shell: pwsh
         run: ./Terraform-Infrastructure/run.ps1; /
-          Write-Output $SAN | Add-Content $GITHUB_ENV
+          Write-Output "{SAN}={$SAN}" | Add-Content $GITHUB_ENV
 
       - name: Az login via cli
         if: always()
