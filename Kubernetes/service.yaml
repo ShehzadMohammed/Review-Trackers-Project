@@ -5,11 +5,12 @@ metadata:
   # annotations:
   #   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
+  externalTrafficPolicy: "Local"
   selector:
     app: rt-py-deployment
   ports:
     - protocol: TCP
-      port: 8090
-      targetPort: 8090
+      port: 80
+      targetPort: 20010
       nodePort: 30201
   type: LoadBalancer

@@ -5,7 +5,7 @@ Get-Date -Format "HHmmMMddyyyy" > dateandtime.txt
 $date = (Get-Content ./dateandtime.txt)
 $stringappend = "rtpystorage"
 $paramforstr = $stringappend + $date
-#Takes Parameter1 for Storage Account Name
+#Appends Storage Account Name with date and time
 
 (Get-Content ./variables.tf).Replace('replace-variable', $paramforstr) | Set-Content ./variables.tf #This sets the variable to the input given
 
@@ -28,10 +28,4 @@ $env:KEY = "terraform.tfstate"
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
 #Changes the script backend to azurerm 
 
-#Finishes the process with the new backend in azure storage account...
-Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-# (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
-# (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
-#This removes the unnecessary files from the local environment
-#Two changes over the lifecyle of this script
-### NOTE : we can still can use the variables defined in powershell if need be. 
+### NOTE : we can still can use the variables defined in powershell if need be in the same runner. 

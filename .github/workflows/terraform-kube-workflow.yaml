@@ -45,8 +45,10 @@ jobs:
       - name: Powershell Script Terraform
         # working-directory: Terraform-Infrastructure/
         shell: pwsh
-        run: ./Terraform-Infrastructure/run.ps1; \
-          Write-Output "{SAN}={$SAN}" | Add-Content $GITHUB_ENV
+        run: |
+          ./Terraform-Infrastructure/run.ps1;
+          Write-Output "{SAN}={$SAN}" | Add-Content $GITHUB_ENV;
+          Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 
       - name: Az login via cli
         if: always()
@@ -57,14 +59,14 @@ jobs:
         env:
           TF_LOG: "trace"
         run: |
-          cd Terraform-Infrastructure/; \
-          terraform init -migrate-state \
-          -backend-config="storage_account_name=$SAN" \
-          -backend-config="container_name=remotestatecontainer" \
-          -backend-config="resource_group_name=rt-infra" \
-          -backend-config="key=terraform.tfstate"; \
-          terraform plan; \
-          terraform apply --auto-approve
+          cd Terraform-Infrastructure/; 
+          terraform init -migrate-state 
+          -backend-config="storage_account_name=$SAN" 
+          -backend-config="container_name=remotestatecontainer" 
+          -backend-config="resource_group_name=rt-infra" 
+          -backend-config="key=terraform.tfstate"; 
+          terraform plan; 
+          terraform apply --auto-approve;
 
       # - name: Get Storage Account Name
       #   id: STORAGE_STEP

@@ -17,7 +17,7 @@ spec:
         - name: rt-py-deployment
           image: shehzadmohammed/review_trackers_project:main
           ports:
-            - containerPort: 8090
+            - containerPort: 20010
           resources:
             limits:
               cpu: 500m
