@@ -59,8 +59,8 @@ jobs:
 
       - name: Move Terraform State to Storage Account
         env:
-          STORAGE_ACCOUNT = ${{ steps.storageaccname.outputs.storageaccname }}
-          TF_LOG = "trace"
+          STORAGE_ACCOUNT: ${{ steps.storageaccname.outputs.storageaccname }}
+          TF_LOG: "trace"
         run: |
           cd Terraform-Infrastructure/; \
           terraform init -migrate-state \
@@ -98,14 +98,10 @@ jobs:
           action: deploy
           strategy: basic
           manifests: |
-            Kubernetes/**.yaml 
-            Kubernetes/**.yaml
+            Kubernetes/deployment.yaml
+            Kubernetes/service.yaml
 
-      - name: stage changed files
-        run: git add .
-
-      - name: commit changed files
-        run: git commit -m "Auto updating repository from intial commit"
-
-      - name: pushing changes
-        run: git push origin main"
+      - name: Updating Repository
+        run: git add .; \
+          git commit -m "Auto updating repository from intial commit"; \
+          git push origin main
