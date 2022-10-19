@@ -16,7 +16,7 @@ COPY ["main.py", "requirements.txt", "./"]
 # Dockerfile Reproducibility
 RUN python -m pip install -r requirements.txt 
 
-USER rt-py-user
+# USER rt-py-user permision denied on cluster
 EXPOSE 80
 
 ENTRYPOINT [ "python" ]
