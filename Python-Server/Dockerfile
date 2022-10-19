@@ -3,8 +3,8 @@ FROM python:alpine3.16 AS env-build
 # Server running as non-root ~ security precaution.
 # Upgrading pip and apk to install security updates. 
 RUN set -eux; \
-    USERNAME='rt-py-user'; \
-    adduser --disabled-password -g "${USERNAME}" $USERNAME; \
+    # USERNAME='rt-py-user'; \
+    # adduser --disabled-password -g "${USERNAME}" $USERNAME; \
     python -m pip install --upgrade pip; \
     apk -U upgrade; \
     mkdir /home/rt-py-user/rt-py-server; 
