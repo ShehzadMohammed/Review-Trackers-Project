@@ -59,7 +59,7 @@ jobs:
 
       - name: Move Terraform State to Storage Account
         run: |
-          cd Terraform-Infrastructure/ \
+          cd Terraform-Infrastructure/; \
           terraform init -migrate-state \
           -backend-config="storage_account_name="${{ steps.storageaccname.outputs.storageaccname }}"" \
           -backend-config="container_name="remotestatecontainer"" \
@@ -76,7 +76,7 @@ jobs:
           tokenPrefix: __
           tokenSuffix: __
         env:
-          REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}
+          REPOSITORY: shehzadmohammed
           IMAGE_NAME: review_trackers_project
           TAG: main
 
