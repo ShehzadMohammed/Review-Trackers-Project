@@ -41,8 +41,7 @@ jobs:
           images: |
             shehzadmohammed/review_trackers_project
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=sha,format=long
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
@@ -55,23 +54,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: ${{ github.event_name != 'pull_request'}}
-          tags: ${{ steps.data.outputs.tags }}
+          tags: ${{ steps.data.outputs.tags }}, shehzadmohammed/review_trackers_project:latest
           labels: ${{ steps.data.outputs.label}}
 
-      # - name: ExportsTag
-      #   uses: DamianReeves/write-file-action@master
-      #   with:
-      #     path: Python-Server/tag-value
-      #     content: |
-      #       ${{ steps.data.outputs.tags }}
-      #     write-mode: overwrite
-
-      # - name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: 'docker.io/shehzadmohammed/review_trackers_project:${{ steps.data.outputs.tags }}'
-      #     format: 'table'
-      #     exit-code: '1'
-      #     ignore-unfixed: true
-      #     vuln-type: 'os,library'
-      #     severity: 'CRITICAL,HIGH'
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "docker.io/${{ steps.data.outputs.tags }}"
+          format: "table"
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
