@@ -21,6 +21,8 @@ jobs:
 
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Further Intialization
         shell: pwsh
         run: (Get-Content .Terraform-Infrastructure/versions.tf).Replace('"local"', '"azurerm"') | Set-Content .Terraform-Infrastructure/versions.tf
 
