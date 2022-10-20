@@ -24,20 +24,16 @@ $PAK = (Get-Content ./primaryaccessskey.txt).ForEach({ '"{0}"' -f $_ })
 $KEY = "terraform.tfstate"
 #Formats and initializes the variables used in the migration process from local to azurerm 
 
-# $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
+$ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
 # "resource_group_name=rt-infra" \
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('#############', "storage_account_name = " + '"' + $(Write-Output $SAN)  + '"' + "`n") | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('############', "container_name = " + '"' + $(Write-Output $SCA) + '"' + "`n") | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('###########', "access_key = " + '"' + $(Write-Output "$PAK") + '"' + "`n")| Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('##########', "key = " + '"' + $(Write-Output "$KEY") + '"' + "`n") | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"#############"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"############"', "container_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"###########"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"##########"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
 # Changes the script backend to azurerm 
-terraform fmt
-terraform init -migrate-state 
-# Initiates the migration & Configuring backend via the variables defined earlier
 
-terraform plan
-terraform apply --auto-approve
+# Initiates the migration & Configuring backend via the variables defined earlier
 
 # Remove-Item storagecontname.txt, storageaccname.txt, dateandtime.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 # Changes the script backend to azurerm 

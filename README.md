@@ -27,7 +27,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 
 Every workflow should be cyclical; in this fashion, this workflow has one initiation and one termination(as per requirement) resetting each time while having running workflows ~ very useful to run experimental environments(or pre-pre-pre production on an accelerator project). 
 
-Usage need: Once initiated update the Storage Account Name and Key secrets with the newly generated values.
+Usage need: Once initiated... the initiator has 90 seconds to update the Storage Account Name and Key secrets with the newly generated values. This is the largest drawback and settlement of this project with the GitHub actions runner not properly compiling the PowerShell script ~ one solution, I could think of, is to use selfhosted runners... however, I think that would take too long and is too out of the scope for this project. 
 
 ## Python
 

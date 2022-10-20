@@ -54,6 +54,13 @@ jobs:
         run: |
           ./Terraform-Infrastructure/run.ps1;
 
+      - name: Wait 1.5 Minute
+        shell: bash
+        run: sleep 90s
+
+      - name: Terraform Intializes
+        run: terraform init -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
+
       - name: KeywordReplace For Kubernetes
         if: always()
         uses: cschleiden/replace-tokens@v1
@@ -83,11 +90,3 @@ jobs:
           manifests: |
             Kubernetes/deployment.yaml
             Kubernetes/service.yaml
-
-      # - name: Updating Repository
-      #   run: |
-      #     git config --global user.email "wrkaccshehzad@gmail.com"
-      #     git config --global user.name "ShehzadMohammed"
-      #     git add .
-      #     git commit -m "Auto updating repository from intial commit"
-      #     git push origin main
