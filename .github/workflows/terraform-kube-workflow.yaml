@@ -62,6 +62,8 @@ jobs:
         run: |
           cd Terraform-Infrastructure
           terraform init -migrate-state -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
+          terraform plan
+          terraform apply --auto-approve
 
       - name: KeywordReplace For Kubernetes
         if: always()
