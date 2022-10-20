@@ -44,6 +44,7 @@ jobs:
           RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
 
       - name: Terraform Intializes
+        shell: pwsh
         run: |
           cd Terraform-Infrastructure
           (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
