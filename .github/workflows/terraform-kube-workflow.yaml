@@ -59,10 +59,10 @@ jobs:
         run: |
           Set-Location Terraform-Infrastructure/;
           $SAN = (Get-Content ./storageaccname.txt); 
-          $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name $SAN --query '[0].value' -o tsv)
+          $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
           terraform init -migrate-state `
           -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" `
-          -backend-config="storage_account_name=$SAN" `
+          -backend-config="storage_account_name="$SAN"" `
           -backend-config="access_key=$ARM_ACCESS_KEY" `
           -backend-config="container_name=remotestatecontainer" `
           -backend-config="resource_group_name=rt-infra" `

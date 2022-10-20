@@ -7,7 +7,7 @@
 Trunk-Based Development in a MonoRepo thus so many testing commits since this is a rushed one-day project. Essentially, we have four workflows ~
 - Docker-workflow: Builds and pushes docker file to a public dockerhub account
 - Terraform-kube-workflow: Initializes terraform creating AKS cluster then creates Kubernetes deployment and service. 
-- Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. 
+- Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. Generally should push to a staging environment such as spinnaker and run tests then deploy to prod. Another attribute that should be added is rollback on failed functionality or acceptance tests if we are directly deploying to production.  
 - Terraform-Destroy: Only on manual trigger kills the environment 
 
 
