@@ -34,7 +34,7 @@ terraform init -migrate-state -backend-config="storage_account_name=$SAN" -backe
 terraform plan
 terraform apply --auto-approve
 
-Remove-Item storagecontname.txt, storageaccname.txt, dateandtime.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, terraform.tfstate.backup,.terraform -Recurse -Force -Confirm:$false
+Remove-Item storagecontname.txt, storageaccname.txt, dateandtime.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 #Changes the script backend to azurerm 
 
 ### NOTE : we can still can use the variables defined in powershell if need be in the same runner. 

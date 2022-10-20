@@ -35,10 +35,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: lint
-        id: lint
-        uses: luke142367/Docker-Lint-Action@v1.0.0
+      - uses: hadolint/hadolint-action@v2.0.0
         with:
-          target: Python-Server/Dockerfile
+          dockerfile: Python-Server/Dockerfile
 
       - name: Docker Metadata
         id: data
