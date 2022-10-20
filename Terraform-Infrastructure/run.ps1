@@ -24,7 +24,7 @@ $PAK = (Get-Content ./primaryaccessskey.txt).ForEach({ '"{0}"' -f $_ })
 $KEY = "terraform.tfstate"
 #Formats and initializes the variables used in the migration process from local to azurerm 
 
-$ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
+# $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
 # "resource_group_name=rt-infra" \
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
 (Get-Content ./versions.tf).Replace('"#############"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
