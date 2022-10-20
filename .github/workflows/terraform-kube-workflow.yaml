@@ -60,6 +60,7 @@ jobs:
           cd Terraform-Infrastructure/;
           $SAN = (Get-Content ./storageaccname.txt); 
           terraform init -migrate-state `
+          -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" `
           -backend-config="storage_account_name=$SAN" `
           -backend-config="container_name=remotestatecontainer" `
           -backend-config="resource_group_name=rt-infra" `
