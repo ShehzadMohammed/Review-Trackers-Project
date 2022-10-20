@@ -33,6 +33,9 @@ jobs:
         with:
           terraform_version: 1.2.4
 
+      - name: Az login via cli
+        if: always()
+        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
       - name: Further Intialization
         shell: pwsh
