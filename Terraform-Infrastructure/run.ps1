@@ -27,10 +27,10 @@ $KEY = "terraform.tfstate"
 # $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
 # "resource_group_name=rt-infra" \
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('"#############"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('"############"', "container_name = " + $(Write-Output $SCA)) | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('"###########"', "access_key = " + $(Write-Output $PAK)) | Set-Content ./versions.tf
-(Get-Content ./versions.tf).Replace('"##########"', "key = " + $(Write-Output $KEY)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('#############', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('############', "container_name = " + $(Write-Output $SCA)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('###########', "access_key = " + $(Write-Output $PAK)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('##########', "key = " + $(Write-Output $KEY)) | Set-Content ./versions.tf
 # Changes the script backend to azurerm 
 
 terraform init -migrate-state 
