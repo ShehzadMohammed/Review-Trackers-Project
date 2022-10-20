@@ -37,6 +37,17 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.4
+      
+      - name: KeywordReplace For Terraform
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["Terraform-Infrastructure/variables.tf"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env:
+          AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
+          RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+          RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
 
       - name: Az login via cli
         if: always()
