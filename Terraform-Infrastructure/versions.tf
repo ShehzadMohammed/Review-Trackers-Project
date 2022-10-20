@@ -1,9 +1,7 @@
 terraform {
   backend "azurerm" {
-    storage_account_name = ${{ secrets.INTIAL_STORAGE_ACCOUNT }}
     container_name       = "remotestatecontainer"
     key                  = "prod.terraform.tfstate"
-    access_key = ${{ secrets.INTIAL_STORAGE_KEY }}
   }
 
   required_providers {
