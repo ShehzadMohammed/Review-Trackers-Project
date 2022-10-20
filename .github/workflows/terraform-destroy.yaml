@@ -18,23 +18,13 @@ jobs:
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Further Intialization
-        shell: pwsh
-        run: (Get-Content ./Terraform-Infrastructure/versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./Terraform-Infrastructure/versions.tf
-
       - name: Terraform Intializes
         run: |
           cd Terraform-Infrastructure
-          terraform init -migrate-state -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
+          terraform init -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
 
       - name: Terraform Destroy
         run: |
           cd Terraform-Infrastructure
           terraform destroy --auto-approve
 
-      # - name: Backend Config Terraform
-      #   shell: pwsh
-      #   run: |
-      #     Set-Location ./Terraform-Infrastructure
-      #     (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
-      #     (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf
