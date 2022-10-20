@@ -28,13 +28,14 @@ $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --accou
 # "resource_group_name=rt-infra" 
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
 # Changes the script backend to azurerm 
-terraform init -migrate-state -backend-config="storage_account_name=$SAN" -backend-config="container_name=$SCA" -backend-config="access_key=$PAK" -backend-config="use_msi=false" -backend-config="use_microsoft_graph=false" -backend-config="key=$KEY" --auto-approve
+Set-Location .. 
+terraform init chdir=./Terraform-Infrastructure/ -migrate-state -backend-config="storage_account_name=$SAN" -backend-config="container_name=$SCA" -backend-config="access_key=$PAK" -backend-config="use_msi=false" -backend-config="use_microsoft_graph=false" -backend-config="key=$KEY" --auto-approve
 # Initiates the migration & Configuring backend via the variables defined earlier
 
 terraform plan
 terraform apply --auto-approve
 
-Remove-Item storagecontname.txt, storageaccname.txt, dateandtime.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-#Changes the script backend to azurerm 
+# Remove-Item storagecontname.txt, storageaccname.txt, dateandtime.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
+# Changes the script backend to azurerm 
 
 ### NOTE : we can still can use the variables defined in powershell if need be in the same runner. 

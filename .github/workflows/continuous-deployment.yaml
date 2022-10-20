@@ -15,6 +15,9 @@ on:
 jobs:
   Deployment:
     runs-on: ubuntu-latest
+    env:
+      AKS_CLUSTER_NAME: "rtpykube"
+      RESOURCE_GROUP_NAME: "rt-infra"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
