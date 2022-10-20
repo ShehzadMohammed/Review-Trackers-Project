@@ -1,4 +1,4 @@
-# Review-Trackers-Project
+# Review-Trackers-Project ~ Reachable on http://52.226.102.107/
 
 #### This project was LOTS of FUN! Thank you so much everyone! Any criticisms and feedback is really appreciated. 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
@@ -27,7 +27,9 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 
 Every workflow should be cyclical; in this fashion, this workflow has one initiation and one termination(as per requirement) resetting each time while having running workflows ~ very useful to run experimental environments(or pre-pre-pre production on an accelerator project). 
 
-Usage need: Once initiated, you have to update the storage account secret with the newly generated values. This is the biggest limitation to move to github actions from jenkins because github actions runners can not properly compile powershell due to some WSL issues. So the only work around is to intiate in an already existing storage account then migrate or another way would be to  use a selfhosted runner. ~ I went for the former and more time effecient version.  
+Usage:
+ - Provide a your azure credenetials, storage account name, and storage account access key for the initialization. This Storage Account must contain a container by the name: remotestatecontainer.  
+ - Once initiated, you have to update the storage account secret with the newly generated values. This is the biggest limitation to move to github actions from jenkins because github actions runners can not properly compile powershell due to some WSL issues. So the only work around is to intiate in an already existing storage account then migrate or another way would be to  use a selfhosted runner. ~ I went for the former and more time effecient version.  
 
 ## Python
 

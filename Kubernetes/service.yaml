@@ -5,6 +5,7 @@ metadata:
   # annotations:
   #   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
+  externalTrafficPolicy: "Local"
   selector:
     app: rt-py-deployment
   ports:
