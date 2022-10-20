@@ -27,7 +27,7 @@ variable "number_of_nodes" {
 }
 variable "resource_group_location" {
   type        = string
-  default     = "East US"
+  default     = "__RESOURCE_GROUP_LOCATION__"
   description = "Define the location of the resource group containing AKS cluster"
 }
 variable "storage_container_name" {

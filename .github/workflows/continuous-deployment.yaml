@@ -5,7 +5,11 @@ on:
     paths:
       - "Terraform-Infrastructure/**.tf"
       - "Kubernetes/**.yaml"
-
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "Terraform-Infrastructure/**.tf"
+      - "Kubernetes/**.yaml"
   workflow_dispatch:
 
 jobs:
@@ -18,10 +22,6 @@ jobs:
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Get Storage Account Name
-        id: storageaccname
-        run: cat Terraform-Infrastructure/storageaccname.txt
-
       - name: Terraform Intializes
         run: terraform init -backend-config="storage_account_name="$SAN"" -backend-config="container_name="remotestatecontainer"" -backend-config="resource_group_name="rt-infra"" -backend-config="key="terraform.tfstate""
 
@@ -32,6 +32,7 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
+        if: ${{ github.event_name == 'push' }}
         run: terraform apply --auto-approve
 
       - name: Az login via cli
@@ -47,7 +48,7 @@ jobs:
           suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: AKS Deployment
-        if: always()
+        if: ${{ github.event_name == 'push' }}
         uses: Azure/k8s-deploy@v3.1
         with:
           manifests: |

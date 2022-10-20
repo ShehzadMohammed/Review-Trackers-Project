@@ -9,14 +9,15 @@ on:
   workflow_dispatch:
 permissions:
   id-token: write
-  contents: read
-  actions: read
+  contents: write
+  actions: write
 jobs:
   Terraform_And_Kubernetes:
     runs-on: ubuntu-latest
     env:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
+      RESOURCE_GROUP_LOCATION: "East US"
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -40,6 +41,7 @@ jobs:
         env:
           AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
           RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+          RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
 
       - name: Az login via cli
         if: always()

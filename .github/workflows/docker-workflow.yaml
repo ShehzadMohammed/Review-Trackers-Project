@@ -34,6 +34,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: lint
+        id: lint
+        uses: luke142367/Docker-Lint-Action@v1.0.0
+        with:
+          target: Python-Server/Dockerfile
+
       - name: Docker Metadata
         id: data
         uses: docker/metadata-action@v4.1.0
@@ -47,6 +53,7 @@ jobs:
 
       - name: Build and Push
         uses: docker/build-push-action@v3.2.0
+        if: ${{ github.event_name == 'push' }}
         with:
           context: Python-Server
           platforms: linux/amd64
@@ -59,6 +66,7 @@ jobs:
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        if: ${{ github.event_name == 'push' }}
         with:
           image-ref: "docker.io/${{ steps.data.outputs.tags }}"
           format: "table"
