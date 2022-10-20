@@ -11,6 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       storageaccname: ${{ steps.storageaccname.outputs.strname }}
+    env:
+      AKS_CLUSTER_NAME: "rtpykube"
+      RESOURCE_GROUP_NAME: "rt-infra"
+      RESOURCE_GROUP_LOCATION: "East US"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
