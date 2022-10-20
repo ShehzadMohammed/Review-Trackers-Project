@@ -57,17 +57,19 @@ jobs:
           TF_LOG: "trace"
         shell: pwsh
         run: |
-          cd Terraform-Infrastructure/;
-          $SAN = (Get-Content ./storageaccname.txt); 
+          Set-Location Terraform-Infrastructure/;
+          $env:SAN = (Get-Content ./storageaccname.txt); 
+          $env:ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name $SAN --query '[0].value' -o tsv)
           terraform init -migrate-state `
           -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" `
-          -backend-config="storage_account_name=$SAN" `
+          -backend-config="access_key=${{ env.ARM_ACCESS_KEY }}" `
+          -backend-config="storage_account_name=${{ env.SAN }}" `
           -backend-config="container_name=remotestatecontainer" `
           -backend-config="resource_group_name=rt-infra" `
           -backend-config="key=terraform.tfstate"; 
           terraform plan; 
           terraform apply --auto-approve;
-          Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
+          Remove-Item storageaccname.txt, storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
 
       - name: KeywordReplace For Kubernetes
         if: always()

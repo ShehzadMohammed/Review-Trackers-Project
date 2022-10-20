@@ -48,10 +48,15 @@ The most simplest Kubernetes cluster implementation.
 - RBAC and general access control all through the environment would have been a considerable improvement, and implementing better networking principles with organizing a supernet and moving down --> to have better well documented project. (I love SDWAN controller!) 
 
 ## Workflows Improvements
-- Less convoluted workflows with better documentation are essential in directory ~ improve readability and future adoption from engineers. 
+- Less convoluted workflows with better documentation are essential ~ improve readability and future adoption from other engineers. 
 - More testing and approval in workflows would also be a good edition.  
 
 ## Requirements
 - All Requirements Met. 
 
-Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed and lots of interruptions throughout the process. 
+## Stretch Goals Met: 
+- CI 
+- Kubernetes
+- \ip however this does not work in Kubernetes due to kubeproxy. ~ No solution to this as of today however they are working on iptable implementation into kubernetes in the future. 
+
+Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed and lots of interruptions throughout the process. I love to be a review tracker :)
