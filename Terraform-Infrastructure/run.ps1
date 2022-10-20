@@ -27,11 +27,7 @@ $KEY = "terraform.tfstate"
 $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
 # "resource_group_name=rt-infra" 
 
-terraform init -migrate-state `
--backend-config="storage_account_name="$SAN"" `
--backend-config="access_key="$ARM_ACCESS_KEY"" `
--backend-config="container_name="$SCA"" `
--backend-config="key=terraform.tfstate"
+terraform init -migrate-state -backend-config="storage_account_name=$SAN" -backend-config="access_key=$ARM_ACCESS_KEY" -backend-config="container_name=$SCA" -backend-config="key=$KEY"
 
 terraform plan
 terraform apply --auto-approve
