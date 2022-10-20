@@ -8,6 +8,6 @@ $paramforstr = $stringappend + $date
 
 (Get-Content ./variables.tf).Replace('replace-variable', $paramforstr) | Set-Content ./variables.tf #This sets the variable to the input given
 
-terraform init -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"  -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}"
+terraform init -backend-config="access_key="${{ secrets.INTIAL_STORAGE_KEY }}""  -backend-config="storage_account_name="${{ secrets.INTIAL_STORAGE_ACCOUNT }}""
 terraform plan 
 terraform apply --auto-approve
