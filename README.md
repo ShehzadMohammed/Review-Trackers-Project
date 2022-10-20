@@ -1,6 +1,6 @@
 # Review-Trackers-Project
 
-#### This project was LOTS of FUN! Thank you guys so much! Any criticisms and feedback is really appreciated. 
+#### This project was LOTS of FUN! Thank you so much everyone! Any criticisms and feedback is really appreciated. 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
 
 ### Description
@@ -68,4 +68,4 @@ The most simplest Kubernetes cluster implementation.
 - Kubernetes
 - \ip however this does not work in Kubernetes due to pods. ~ No solution to this as of today however they are working on iptable implementation into kubernetes in the future. 
 
-Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed and lots of interruptions throughout the process. I love to be a review tracker :)
+Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed process while juggling many different commitments, job, and family ~ 2 and half days needs improvement for sure. But, I would love to be a review tracker :) I have enjoyed every interaction I have had with review trackers. 
