@@ -5,6 +5,8 @@ on:
     paths:
       - "Terraform-Infrastructure/**.tf"
       - "Kubernetes/**.yaml"
+      - "Python-Server/dockerfile"
+      - "Python-Server/main.py"
   pull_request:
     branches: ["main"]
     paths:
@@ -19,6 +21,10 @@ jobs:
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
     steps:
+      - name: Wait 1.5 Minute
+        shell: bash
+        run: sleep 90 seconds
+
       - name: Checkout
         uses: actions/checkout@v3
 
