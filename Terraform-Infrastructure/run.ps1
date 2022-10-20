@@ -32,7 +32,7 @@ $KEY = "terraform.tfstate"
 (Get-Content ./versions.tf).Replace('###########', "access_key = " + $(Write-Output $PAK)) | Set-Content ./versions.tf
 (Get-Content ./versions.tf).Replace('##########', "key = " + $(Write-Output $KEY)) | Set-Content ./versions.tf
 # Changes the script backend to azurerm 
-
+terraform fmt
 terraform init -migrate-state 
 # Initiates the migration & Configuring backend via the variables defined earlier
 
