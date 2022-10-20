@@ -57,6 +57,6 @@ The most simplest Kubernetes cluster implementation.
 ## Stretch Goals Met: 
 - CI 
 - Kubernetes
-- \ip however this does not work in Kubernetes due to kubeproxy. ~ No solution to this as of today however they are working on iptable implementation into kubernetes in the future. 
+- \ip however this does not work in Kubernetes due to pods. ~ No solution to this as of today however they are working on iptable implementation into kubernetes in the future. 
 
 Hopefully this demonstrates that I am willing to go the mile for Review Trackers! This is not even close to my best work very rushed and lots of interruptions throughout the process. I love to be a review tracker :)

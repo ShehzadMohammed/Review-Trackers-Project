@@ -24,12 +24,16 @@ $PAK = (Get-Content ./primaryaccessskey.txt).ForEach({ '"{0}"' -f $_ })
 $KEY = "terraform.tfstate"
 #Formats and initializes the variables used in the migration process from local to azurerm 
 
-$ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
-# "resource_group_name=rt-infra" 
+# $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
+# "resource_group_name=rt-infra" \
 (Get-Content ./versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"#############"', "storage_account_name = " + $(Write-Output $SAN)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"############"', "container_name = " + $(Write-Output $SCA)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"###########"', "access_key = " + $(Write-Output $PAK)) | Set-Content ./versions.tf
+(Get-Content ./versions.tf).Replace('"##########"', "key = " + $(Write-Output $KEY)) | Set-Content ./versions.tf
 # Changes the script backend to azurerm 
-Set-Location .. 
-terraform init chdir=./Terraform-Infrastructure/ -migrate-state -backend-config="storage_account_name=$SAN" -backend-config="container_name=$SCA" -backend-config="access_key=$PAK" -backend-config="use_msi=false" -backend-config="use_microsoft_graph=false" -backend-config="key=$KEY" --auto-approve
+
+terraform init -migrate-state 
 # Initiates the migration & Configuring backend via the variables defined earlier
 
 terraform plan
