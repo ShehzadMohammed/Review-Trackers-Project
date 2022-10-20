@@ -46,7 +46,7 @@ jobs:
       - name: Terraform Intializes
         run: |
           cd Terraform-Infrastructure
-          (Get-Content ./variables.tf).Replace('replace-variable', ${{ secrets.STORAGE_ACCOUNT_NAME }}) | Set-Content ./variables.tf
+          (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
           terraform init -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
 
       - name: Terraform Destroy
