@@ -5,10 +5,10 @@
 
 ### Description
 Trunk-Based Development in a MonoRepo thus so many testing commits since this is a rushed one-day project. Essentially, we have four workflows ~
-- Docker-workflow: Builds and pushes docker file to a public dockerhub account
+- Docker-workflow: Builds and pushes docker file to a public [dockerhub account](https://hub.docker.com/repository/docker/shehzadmohammed/review_trackers_project). 
 - Terraform-kube-workflow: Initializes terraform creating AKS cluster then creates Kubernetes deployment and service. 
 - Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. Generally should push to a staging environment such as spinnaker and run tests then deploy to prod. Another attribute that should be added is rollback on failed functionality or acceptance tests if we are directly deploying to production.  
-- Terraform-Destroy: Only on manual trigger kills the environment 
+- Terraform-Destroy: Only on manual trigger kills the environment.
 
 
 
@@ -22,6 +22,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 - [Requirements Met](#Requirements)
 
 --------------
+
 ## Usage 
 
 Every workflow should be cyclical; in this fashion, this workflow has one initiation and one termination(as per requirement) resetting each time while having running workflows ~ very useful to run experimental environments(or pre-pre-pre production on an accelerator project). 
@@ -38,12 +39,12 @@ The python directory contains a python file that launches a HHTP server with two
 
 ## Terraform
 
-The module directory is used to provision AKS cluster for the python app and storage account for the tfstate file to migrate into and point the terraform backend script to. It creates a container in the storage account for the tfstate file. We can create a nested module here to create multiple containers as needed for future tfstate files for different azure landing zones. The one cycle of terraform provisioning and initializes environmental variables and storage account name based on date and time. The second script runs within the runner as bash as the second cycle of terraform provisioning. The first cycle will create the storage account and a SAS token which will be a fall back incase the primary access key does not work. The second cycle will migrate the backend to the newly created storage account therefore isolating the whole environment on the infrastructure itself. The AKS cluster is managed by azure due to the time crunch. 
+The module directory is used to provision AKS cluster for the python app and storage account for the tfstate file to migrate into and point the terraform backend script to. It creates a container in the storage account for the tfstate file. We can create a nested module here to create multiple containers as needed for future tfstate files for different azure landing zones. The first part of the PowerShell script provisions and initializes environmental variables and storage account name based on date and time. The second part of the PowerShell script migrates the backend to the newly created storage account therefore isolating the whole environment on the infrastructure itself. The AKS cluster is managed by azure due to the time crunch. 
 
 ### improvements
 - AKS cluster should be self managed with better security in more sophisticated clusters. In this case, it is completely okay to use managed cluster since this is a very preliminary interview project. 
-- The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it was dividend into two separate scripts for initialization thus becoming "non-liftnshift" :)   ||| This could also be achieved using self-hosted runners as well. 
-- Artifacts should be created and stored for every terraform cycle.
+- The script could be improved on the GitHub Actions Runners since the pwsh shell in the runner could not properly compile the wholistic script so it a workaround was used with comments and replacing the comments with proper configuration thus becoming unnecessarily complicated. 
+- Artifacts should be created and stored for every terraform plan.
 
 ## Kubernetes 
 
