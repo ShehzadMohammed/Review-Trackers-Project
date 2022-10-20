@@ -5,7 +5,7 @@ FROM python:alpine3.16 AS env-build
 RUN set -eux; \
     USERNAME='rt-py-user'; \
     adduser --disabled-password -g "${USERNAME}" $USERNAME; \
-    python -m pip install --upgrade pip; \
+    python -m pip install --no-cache-dir --upgrade pip; \
     apk -U upgrade; \
     mkdir /home/rt-py-user/rt-py-server; 
 
@@ -14,7 +14,7 @@ WORKDIR /home/rt-py-user/rt-py-server
 # Could be done via remote repository github ssh but unnessary
 COPY ["main.py", "requirements.txt", "./"]
 # Dockerfile Reproducibility
-RUN python -m pip install -r requirements.txt 
+RUN python -m pip install --no-cache-dir -r requirements.txt 
 
 USER rt-py-user
 EXPOSE 8090/tcp
