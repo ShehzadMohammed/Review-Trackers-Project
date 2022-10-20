@@ -5,7 +5,7 @@ FROM python:alpine3.16 AS env-build
 RUN set -eux; \
     USERNAME='rt-py-user'; \
     adduser --disabled-password -g "${USERNAME}" $USERNAME; \
-    python -m pip install --no-cache-dir --upgrade pip=22.3; \
+    python -m pip install --no-cache-dir --upgrade pip==22.3; \
     apk -U upgrade; \
     mkdir /home/rt-py-user/rt-py-server; 
 
