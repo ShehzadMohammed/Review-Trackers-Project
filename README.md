@@ -14,7 +14,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 
 
 ## Table of Contents
-
+- [Usage](#Usage)
 - [Python](#Python)
 - [Terraform](#Terraform)
 - [Kubernetes](#Kubernetes)
@@ -22,6 +22,11 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 - [Requirements Met](#Requirements)
 
 --------------
+## Usage 
+
+Every workflow should be cyclical; in this fashion, this workflow has one initiation and one termination(as per requirement) resetting each time while having running workflows ~ very useful to run experimental environments(or pre-pre-pre production on an accelerator project). 
+
+Usage need: Once initiated update the Storage Account Name and Key secrets with the newly generated values.
 
 ## Python
 
@@ -41,6 +46,7 @@ The module directory is used to provision AKS cluster for the python app and sto
 - Artifacts should be created and stored for every terraform cycle.
 
 ## Kubernetes 
+
 The most simplest Kubernetes cluster implementation. 
 
 ### improvements
@@ -48,10 +54,12 @@ The most simplest Kubernetes cluster implementation.
 - RBAC and general access control all through the environment would have been a considerable improvement, and implementing better networking principles with organizing a supernet and moving down --> to have better well documented project. (I love SDWAN controller!) 
 
 ## Workflows Improvements
+
 - Less convoluted workflows with better documentation are essential ~ improve readability and future adoption from other engineers. 
 - More testing and approval in workflows would also be a good edition.  
 
 ## Requirements
+
 - All Requirements Met. 
 
 ## Stretch Goals Met: 
