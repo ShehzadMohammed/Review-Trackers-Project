@@ -49,10 +49,18 @@ jobs:
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
       - name: Powershell Script Terraform
-        # working-directory: Terraform-Infrastructure/
         shell: pwsh
         run: |
           ./Terraform-Infrastructure/run.ps1;
+
+      - name: Send Notification for Secret Update
+        uses: cinotify/github-action@main
+        with:
+          to: ${{ secrets.GMAIL_ACCOUNT }} 
+          subject: 'Please Update Storage Account Secrets'
+          body: |
+            This is a notification from Action: \`${{ github.event_name }}\` Workflow: \`${{ github.workflow }}\`
+            To notify you to update the storage account secrets. 
 
       - name: Wait 1.5 Minute
         shell: bash
@@ -61,7 +69,6 @@ jobs:
       - name: Terraform Migrate State
         run: |
           cd Terraform-Infrastructure
-          $export TF_LOG="TRACE"
           terraform init -migrate-state -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
           terraform plan
           terraform apply --auto-approve
