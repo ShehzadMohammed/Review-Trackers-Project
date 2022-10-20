@@ -21,7 +21,7 @@ jobs:
       - name: Get Storage Account Name
         id: storageaccname
         run: |
-          value=`cat Terraform-Infrastructure/storageaccname.txt`; \
+          value=`cat Terraform-Infrastructure/storageaccname.txt`
           echo "::set-output name=storageaccname::$value"
 
       - name: Terraform Intializes
@@ -33,6 +33,6 @@ jobs:
       - name: Backend Config Terraform
         shell: pwsh
         run: |
-          Set-Location ./Terraform-Infrastructure;
-          (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf;
-          (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf;
+          Set-Location ./Terraform-Infrastructure
+          (Get-Content ./variables.tf).Replace($storageName, 'replace-variable') | Set-Content ./variables.tf
+          (Get-Content ./versions.tf).Replace('"azurerm"', '"local"') | Set-Content ./versions.tf

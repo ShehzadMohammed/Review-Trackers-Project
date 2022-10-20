@@ -51,26 +51,6 @@ jobs:
         if: always()
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Backend Migrate
-        if: always()
-        env:
-          TF_LOG: "trace"
-        shell: pwsh
-        run: |
-          Set-Location Terraform-Infrastructure/;
-          $SAN = (Get-Content ./storageaccname.txt); 
-          $ARM_ACCESS_KEY=$(az storage account keys list --resource-group rt-intra --account-name "$SAN" --query '[0].value' -o tsv)
-          terraform init -migrate-state `
-          -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" `
-          -backend-config="storage_account_name="$SAN"" `
-          -backend-config="access_key=$ARM_ACCESS_KEY" `
-          -backend-config="container_name=remotestatecontainer" `
-          -backend-config="resource_group_name=rt-infra" `
-          -backend-config="key=terraform.tfstate"; 
-          terraform plan; 
-          terraform apply --auto-approve;
-          Remove-Item storagecontname.txt, primaryaccessskey.txt, terraform.tfstate, .\.terraform.lock.hcl, .terraform -Recurse -Force -Confirm:$false
-
       - name: KeywordReplace For Kubernetes
         if: always()
         uses: cschleiden/replace-tokens@v1
