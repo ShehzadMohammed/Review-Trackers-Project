@@ -75,7 +75,7 @@ jobs:
           terraform plan
 
       - name: Terraform Apply
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           cd Terraform-Infrastructure
           terraform apply --auto-approve
@@ -91,9 +91,21 @@ jobs:
           resource-group: ${{  env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
           suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          
+      - name: KeywordReplace For Kubernetes
+        if: always()
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["Kubernetes/deployment.yaml"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env:
+          REPOSITORY: shehzadmohammed
+          IMAGE_NAME: review_trackers_project
+          TAG: latest
 
       - name: AKS Deployment
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: Azure/k8s-deploy@v3.1
         with:
           manifests: |
