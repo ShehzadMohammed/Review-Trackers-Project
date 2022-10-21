@@ -7,7 +7,7 @@ permissions:
   actions: read
 
 jobs:
-  Terraform_Destroy:
+  Terraform-State-Migration:
     runs-on: ubuntu-latest
     env:
       AKS_CLUSTER_NAME: "rtpykube"
