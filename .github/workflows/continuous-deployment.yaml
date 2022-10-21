@@ -91,7 +91,7 @@ jobs:
           resource-group: ${{  env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
           suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          
+
       - name: KeywordReplace For Kubernetes
         if: always()
         uses: cschleiden/replace-tokens@v1
