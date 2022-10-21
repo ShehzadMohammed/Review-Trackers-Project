@@ -42,11 +42,10 @@ jobs:
           RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
           RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
 
-      - name: Terraform Intializes
-        shell: pwsh
+      - name: Terraform Migrate
         run: |
           cd Terraform-Infrastructure
-          (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
+          sed -i 's/replace-variable/"${{ secrets.STORAGE_ACCOUNT_NAME }}"/g' versions.tf
           terraform init terraform init -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"
           terraform init -migrate-state -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
           terraform plan 

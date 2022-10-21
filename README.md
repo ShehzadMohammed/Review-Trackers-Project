@@ -29,7 +29,7 @@ Every workflow should be cyclical; in this fashion, this workflow has one initia
 
 Usage:
  - Provide a your azure credenetials, storage account name, and storage account access key for the initialization. This Storage Account must contain a container by the name: remotestatecontainer.  
- - Once initiated, you have to update the storage account secret with the newly generated values. This is the biggest limitation to move to github actions from jenkins because github actions runners can not properly compile powershell due to some WSL issues. So the only work around is to intiate in an already existing storage account then migrate or another way would be to  use a selfhosted runner. ~ I went for the former and more time effecient version.  
+ - Once initiated, you have to update the storage account secret with the newly generated values and manually run the migrate workflow. This is the biggest limitation to move to github actions from jenkins because github actions runners can not properly compile powershell due to some WSL issues. So the only work around is to intiate in an already existing storage account then migrate or another way would be to  use a selfhosted runner. ~ I went for the former and more time effecient version.  
 
 ## Python
 
