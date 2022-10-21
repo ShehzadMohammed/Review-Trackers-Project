@@ -17,6 +17,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -45,11 +46,8 @@ jobs:
         shell: pwsh
         run: |
           cd Terraform-Infrastructure
-          (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
-          terraform init -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
-
-      - name: Terraform Destroy
-        run: |
-          cd Terraform-Infrastructure
-          terraform destroy --auto-approve
-
+          (Get-Content ./variables.tf).Replace('replace-variable', ${{ secrets.STORAGE_ACCOUNT_NAME }}) | Set-Content ./variables.tf
+          terraform init terraform init -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"
+          terraform init -migrate-state -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" -backend-config="access_key=${{ secrets.STORAGE_ACCOUNT_KEY }}" -backend-config="container_name=remotestatecontainer" -backend-config="resource_group_name=rt-infra" -backend-config="key=terraform.tfstate"
+          terraform plan 
+          terraform apply --auto-approve
