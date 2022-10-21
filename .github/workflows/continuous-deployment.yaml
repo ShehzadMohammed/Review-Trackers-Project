@@ -62,7 +62,7 @@ jobs:
         run: |
           cd Terraform-Infrastructure
           (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
-          terraform init terraform init -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}" -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"
+          terraform init -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"  -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}"
 
       - name: Terraform fmt
         run: |

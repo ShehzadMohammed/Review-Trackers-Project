@@ -28,7 +28,7 @@ Trunk-Based Development in a MonoRepo thus so many testing commits since this is
 Every workflow should be cyclical; in this fashion, this workflow has one initiation and one termination(as per requirement) resetting each time while having running workflows ~ very useful to run experimental environments(or pre-pre-pre production on an accelerator project). 
 
 Usage:
- - Provide a your azure credenetials, storage account name, and storage account access key for the initialization. This Storage Account must contain a container by the name: remotestatecontainer.  
+ - Provide a your azure credenetials, storage account name, and storage account access key for the initialization. This Storage Account must contain a container by the name: remotestatecontainer (I know a variable could have been passed here but I think chdir error is being caused by too many parameters therefore decided use the least amount of parameters).  
  - Once initiated, you have to update the storage account secret with the newly generated values and manually run the migrate workflow. This is the biggest limitation to move to github actions from jenkins because github actions runners can not properly compile powershell due to some WSL issues. So the only work around be to use a selfhosted runner. However, This is not time effective; therefore, for this demo atleast I have settled for manual migration.
 
 ## Python
