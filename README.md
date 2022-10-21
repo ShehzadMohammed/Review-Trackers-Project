@@ -1,4 +1,4 @@
-# Review-Trackers-Project ~ Reachable on http://52.226.102.107/
+# Review-Trackers-Project ~ Reachable on http://20.237.1.61/
 
 #### This project was LOTS of FUN! Thank you so much everyone! Any criticisms and feedback is really appreciated. 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
@@ -7,7 +7,7 @@
 Trunk-Based Development in a MonoRepo thus so many testing commits since this is a rushed one-day project. Essentially, we have four workflows ~
 - Docker-workflow: Builds and pushes docker file to a public [dockerhub account.](https://hub.docker.com/r/shehzadmohammed/review_trackers_project) 
 - Terraform-kube-workflow: Initializes terraform creating AKS cluster then creates Kubernetes deployment and service. 
-- Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. Generally should push to a staging environment such as spinnaker and run tests then deploy to prod. Another attribute that should be added is rollback on failed functionality or acceptance tests if we are directly deploying to production.  
+- Continuous-Deployment: Continuously applies terraform code and deploys Kubernetes. Generally should push to a staging environment such as spinnaker and run tests then deploy to prod with strategy. Another attribute that should be added is rollback on failed functionality or acceptance tests if we are directly deploying to production.  
 - Terraform-Destroy: Only on manual trigger kills the environment.
 
 
