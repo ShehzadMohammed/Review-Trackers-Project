@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3
         
-      - uses: ./.github/workflows/Intialization-Template.yaml
+      - uses: ShehzadMohammed/Review-Trackers-Project/.github/workflows/Intialization-Template.yaml@main
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
