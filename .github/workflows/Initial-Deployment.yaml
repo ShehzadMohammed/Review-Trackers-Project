@@ -23,7 +23,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - uses: ./.github/workflows/Intialization-Template.yaml
+      - name: Intialization Template
+        uses: ./.github/workflows/Intialization-Template.yaml
 
       - name: Powershell Script Terraform
         working-directory: Terraform-Infrastructure
