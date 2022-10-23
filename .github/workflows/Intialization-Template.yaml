@@ -1,15 +1,31 @@
-name: Intialization Template
-on: 
-  workflow_call:
+name: Initial Deployment - Terraform - Kubernetes
 
-jobs: 
-  template:
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+  actions: write
+jobs:
+  Initial_Deployment:
     runs-on: ubuntu-latest
+    env:
+      REPOSITORY: shehzadmohammed
+      IMAGE_NAME: review_trackers_project
+      TAG: latest
+      AKS_CLUSTER_NAME: "rtpykube"
+      RESOURCE_GROUP_NAME: "rt-infra"
+      RESOURCE_GROUP_LOCATION: "East US"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Intializes Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -41,9 +57,32 @@ jobs:
           tokenPrefix: __
           tokenSuffix: __
         env:
-          REPOSITORY: shehzadmohammed
-          IMAGE_NAME: review_trackers_project
-          TAG: latest
+          REPOSITORY: ${{ env.REPOSITORY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          TAG: ${{ env.TAG }}
 
-  
-    
+      - name: Powershell Script Terraform
+        working-directory: Terraform-Infrastructure
+        shell: pwsh
+        run: |
+          ./run.ps1;
+          terraform init -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"  -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}"
+          terraform plan 
+          terraform apply --auto-approve
+      - name: AKS Context
+        uses: azure/aks-set-context@v3
+        if: always()
+        with:
+          resource-group: ${{  env.RESOURCE_GROUP_NAME }}
+          cluster-name: ${{  env.AKS_CLUSTER_NAME }}
+          suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: AKS Deployment
+        if: always()
+        uses: Azure/k8s-deploy@v3.1
+        with:
+          action: deploy
+          strategy: basic
+          manifests: |
+            Kubernetes/deployment.yaml
+            Kubernetes/service.yaml

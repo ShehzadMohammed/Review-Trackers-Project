@@ -12,6 +12,9 @@ jobs:
   Kubernetes_Deployment:
     runs-on: ubuntu-latest
     env:
+      REPOSITORY: shehzadmohammed
+      IMAGE_NAME: review_trackers_project
+      TAG: latest
       AKS_CLUSTER_NAME: "rtpykube"
       RESOURCE_GROUP_NAME: "rt-infra"
       RESOURCE_GROUP_LOCATION: "East US"
@@ -24,20 +27,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: validation
-        shell: bash
-        run: | 
-          exitCode=$(echo $?)
-          if (($exitCode == 0));
-          then 
-            echo "checkout=true" >> $GITHUB_ENV
-          else
-            echo "checkout=false" >> $GITHUB_ENV
-          fi 
+      - name: Intializes Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.4
 
-      - name: Intialization 
-        if: env.checkout
-        uses: ShehzadMohammed/Review-Trackers-Project-Template--Workflow/.github/workflows/Intialization-Template.yaml
+      - name: KeywordReplace For Terraform
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["Terraform-Infrastructure/variables.tf"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env:
+          AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
+          RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
+          RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Az login via cli
+        if: always()
+        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+
+      - name: KeywordReplace For Kubernetes
+        if: always()
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["Kubernetes/deployment.yaml"]'
+          tokenPrefix: __
+          tokenSuffix: __
+        env:
+          REPOSITORY: ${{ env.REPOSITORY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          TAG: ${{ env.TAG }}
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
