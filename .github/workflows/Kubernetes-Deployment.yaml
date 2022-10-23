@@ -23,9 +23,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+        run: | 
+          exitCode = echo $?
+          if $exitCode == true;
+          then 
+            echo "checkout=true" >> $GITHUB_ENV
+          else
+            echo "checkout=false" >> $GITHUB_ENV
+          fi 
+          
       - name: Intialization 
-        run: sleep 15s
+        if: env.checkout
         uses: ./.github/workflows/Intialization-Template.yaml
 
       - name: AKS Context
