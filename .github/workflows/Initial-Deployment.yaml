@@ -83,9 +83,6 @@ jobs:
           cluster-name: ${{  env.AKS_CLUSTER_NAME }}
           suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-
       - name: AKS Deployment
         if: always()
         uses: Azure/k8s-deploy@v3.1

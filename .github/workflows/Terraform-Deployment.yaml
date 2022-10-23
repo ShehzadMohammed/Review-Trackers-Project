@@ -1,4 +1,4 @@
-name: Kubernetes Deployment
+name: Terraform Deployment
 on:
   push:
     branches: ["main"]
