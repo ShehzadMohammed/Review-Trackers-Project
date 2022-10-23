@@ -37,7 +37,7 @@ jobs:
 
       - name: Intialization 
         if: env.checkout
-        uses: ./.github/workflows/Intialization-Template.yaml
+        uses: ShehzadMohammed/Review-Trackers-Project-Template--Workflow/.github/workflows/Intialization-Template.yaml
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
