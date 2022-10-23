@@ -1,11 +1,10 @@
-name: Intial Deployment
+name: Initial Deployment - Terraform & Kubernetes
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/terraform-kube-workflow.yaml"
-
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - ".github/workflows/terraform-kube-workflow.yaml"
   workflow_dispatch:
 
 permissions:
@@ -13,7 +12,7 @@ permissions:
   contents: write
   actions: write
 jobs:
-  Terraform_And_Kubernetes:
+  Initial_Deployment:
     runs-on: ubuntu-latest
     env:
       AKS_CLUSTER_NAME: "rtpykube"
@@ -57,12 +56,12 @@ jobs:
           terraform plan 
           terraform apply --auto-approve
 
-      - name: Send Notification for Secret Update
-        uses: cinotify/github-action@main
-        with:
-          to: ${{ secrets.GMAIL_ACCOUNT }} 
-          subject: 'Please Update Storage Account Secrets'
-          body: To notify you to update the storage account secrets. 
+      # - name: Send Notification for Secret Update
+      #   uses: cinotify/github-action@main
+      #   with:
+      #     to: ${{ secrets.GMAIL_ACCOUNT }} 
+      #     subject: 'Please Update Storage Account Secrets'
+      #     body: To notify you to update the storage account secrets. 
 
       - name: KeywordReplace For Kubernetes
         if: always()
@@ -91,5 +90,4 @@ jobs:
           action: deploy
           strategy: basic
           manifests: |
-            Kubernetes/deployment.yaml
-            Kubernetes/service.yaml
+            Kubernetes/

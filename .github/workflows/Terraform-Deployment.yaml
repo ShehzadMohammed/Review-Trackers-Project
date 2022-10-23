@@ -1,21 +1,18 @@
-name: Continuous Deployment
+name: Kubernetes Deployment
 on:
   push:
     branches: ["main"]
     paths:
       - "Terraform-Infrastructure/**.tf"
-      - "Kubernetes/**.yaml"
-      - "Python-Server/dockerfile"
-      - "Python-Server/main.py"
   pull_request:
     branches: ["main"]
     paths:
       - "Terraform-Infrastructure/**.tf"
-      - "Kubernetes/**.yaml"
+
   workflow_dispatch:
 
 jobs:
-  Deployment:
+  Terraform_Deployment:
     runs-on: ubuntu-latest
     env:
       AKS_CLUSTER_NAME: "rtpykube"
@@ -26,10 +23,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
-      - name: Wait 1.5 Minute
-        shell: bash
-        run: sleep 90s
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -49,13 +42,10 @@ jobs:
           RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
           RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
 
-      - name: Az login via cli
-        if: always()
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
-
-      - name: Further Intialization
-        shell: pwsh
-        run: (Get-Content ./Terraform-Infrastructure/versions.tf).Replace('"local"', '"azurerm"') | Set-Content ./Terraform-Infrastructure/versions.tf
+      - name: Terraform lint
+        run: |
+          cd Terraform-Infrastructure
+          terraform fmt
 
       - name: Terraform Intializes
         shell: pwsh
@@ -64,50 +54,22 @@ jobs:
           (Get-Content ./variables.tf).Replace('replace-variable', "${{ secrets.STORAGE_ACCOUNT_NAME }}") | Set-Content ./variables.tf
           terraform init -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"  -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}"
 
-      - name: Terraform fmt
+      - name: Terraform Validate
         run: |
           cd Terraform-Infrastructure
-          terraform fmt
+          terraform validate
 
       - name: Terraform Plan
         run: |
           cd Terraform-Infrastructure
-          terraform plan
+          terraform plan -detailed-exitcode || res=$?
+          if (($res == 0))
+          then 
+            exit 0;
+          fi
 
       - name: Terraform Apply
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           cd Terraform-Infrastructure
           terraform apply --auto-approve
-
-      - name: Az login via cli
-        if: always()
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
-
-      - name: AKS Context
-        uses: azure/aks-set-context@v3
-        if: always()
-        with:
-          resource-group: ${{  env.RESOURCE_GROUP_NAME }}
-          cluster-name: ${{  env.AKS_CLUSTER_NAME }}
-          suscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
-      - name: KeywordReplace For Kubernetes
-        if: always()
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["Kubernetes/deployment.yaml"]'
-          tokenPrefix: __
-          tokenSuffix: __
-        env:
-          REPOSITORY: shehzadmohammed
-          IMAGE_NAME: review_trackers_project
-          TAG: latest
-
-      - name: AKS Deployment
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: Azure/k8s-deploy@v3.1
-        with:
-          manifests: |
-            Kubernetes/deployment.yaml
-            Kubernetes/service.yaml
