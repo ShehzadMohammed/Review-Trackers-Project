@@ -49,7 +49,9 @@ jobs:
           IMAGE_NAME: review_trackers_project
           TAG: latest
 
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+
       - name: AKS Deployment RollOut
         run: | 
-          cd Kubernetes
-          kubectl apply -f 
+          kubectl apply -f Kubernetes
