@@ -21,7 +21,10 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - uses: ./.github/workflows/Intialization_Template.yaml
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - uses: ./.github/workflows/Intialization_Template.yml
 
       - name: AKS Context
         uses: azure/aks-set-context@v3

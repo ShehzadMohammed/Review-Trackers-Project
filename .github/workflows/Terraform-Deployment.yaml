@@ -24,6 +24,9 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
       - uses: ./.github/workflows/Intialization_Template.yaml
 
       - name: Terraform lint

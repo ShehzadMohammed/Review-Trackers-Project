@@ -18,7 +18,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
           tags: ${{ steps.data.outputs.tags }}, shehzadmohammed/review_trackers_project:latest
           labels: ${{ steps.data.outputs.label}}
 
-      - name: Run Trivy vulnerability scanner
+      - name: Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         if: ${{ github.event_name == 'push' }}
         with:
