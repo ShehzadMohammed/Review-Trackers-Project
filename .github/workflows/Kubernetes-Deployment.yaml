@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout
-        if: success()
         uses: actions/checkout@v3
         
       - name: Intialization 
+        if: success()
         uses: ./.github/workflows/Intialization-Template.yaml
 
       - name: AKS Context
