@@ -17,29 +17,9 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Intializes Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.2.4
-
-      - name: Az login via cli
-        if: always()
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
-
-      - name: KeywordReplace For Terraform
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["Terraform-Infrastructure/variables.tf"]'
-          tokenPrefix: __
-          tokenSuffix: __
-        env:
-          AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
-          RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
-          RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
+      - uses: ./.github/workflows/Intialization_Template
 
       - name: Terraform Intializes
         shell: pwsh

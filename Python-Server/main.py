@@ -15,7 +15,7 @@ class Proc(BaseHTTPRequestHandler):
         
         response_status = json.dumps({"result": "success"}) 
         response_ip = json.dumps({"ip": client_ip, "city": city_of_ip, "state": state_of_ip}, sort_keys=False, indent=4)
-        response_else = "Try /status or /ip as endpoints!"
+        response_else = "Please try /status or /ip as endpoints!"
 
         if self.path == '/status':
             # Response used to troubleshoot

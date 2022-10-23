@@ -1,10 +1,6 @@
 name: Initial Deployment - Terraform - Kubernetes
 
 on:
-  # push:
-  #   branches: ["main"]
-  #   paths:
-  #     - ".github/workflows/terraform-kube-workflow.yaml"
   workflow_dispatch:
 
 permissions:
@@ -24,28 +20,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Intializes Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.2.4
-
-      - name: KeywordReplace For Terraform
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["Terraform-Infrastructure/variables.tf"]'
-          tokenPrefix: __
-          tokenSuffix: __
-        env:
-          AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
-          RESOURCE_GROUP_NAME: ${{ env.RESOURCE_GROUP_NAME }}
-          RESOURCE_GROUP_LOCATION: ${{ env.RESOURCE_GROUP_LOCATION }}
-
-      - name: Az login via cli
-        if: always()
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+      - uses: ./.github/workflows/Intialization_Template
 
       - name: Powershell Script Terraform
         working-directory: Terraform-Infrastructure
@@ -55,25 +30,6 @@ jobs:
           terraform init -backend-config="access_key=${{ secrets.INTIAL_STORAGE_KEY }}"  -backend-config="storage_account_name=${{ secrets.INTIAL_STORAGE_ACCOUNT }}"
           terraform plan 
           terraform apply --auto-approve
-
-      # - name: Send Notification for Secret Update
-      #   uses: cinotify/github-action@main
-      #   with:
-      #     to: ${{ secrets.GMAIL_ACCOUNT }} 
-      #     subject: 'Please Update Storage Account Secrets'
-      #     body: To notify you to update the storage account secrets. 
-
-      - name: KeywordReplace For Kubernetes
-        if: always()
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["Kubernetes/deployment.yaml"]'
-          tokenPrefix: __
-          tokenSuffix: __
-        env:
-          REPOSITORY: shehzadmohammed
-          IMAGE_NAME: review_trackers_project
-          TAG: latest
 
       - name: AKS Context
         uses: azure/aks-set-context@v3
