@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: validation
         run: | 
           exitCode = echo $?
           if $exitCode == true;
@@ -31,7 +33,7 @@ jobs:
           else
             echo "checkout=false" >> $GITHUB_ENV
           fi 
-          
+
       - name: Intialization 
         if: env.checkout
         uses: ./.github/workflows/Intialization-Template.yaml
