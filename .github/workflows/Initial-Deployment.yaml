@@ -1,4 +1,4 @@
-name: Initial Deployment - Terraform AND Kubernetes
+name: Initial Deployment - Terraform - Kubernetes
 
 on:
   # push:

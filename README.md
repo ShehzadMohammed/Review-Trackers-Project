@@ -1,4 +1,4 @@
-# Review-Trackers-Project ~ Reachable on http://20.237.1.61/
+# Review-Trackers-Project ~ Reachable on http://52.188.77.172/
 
 #### This project was LOTS of FUN! Thank you so much everyone! Any criticisms and feedback is really appreciated. 
 ###### Note: Everything here has been done with this being a interview project in mind even this readme file. And, of course, in practice there would better commits more granular/meticulous with better descriptions and well-tested. 
@@ -30,6 +30,7 @@ Every workflow should be cyclical; in this fashion, this workflow has one initia
 
 Usage:
  - Provide azure credenetials, storage account name, and storage account access key for the initialization. This Storage Account must contain a container by the name: remotestatecontainer (There could have been a parameter passed for this value however in this scenario having a static container is the most risk-averse option).  
+ - Once initiated, update the storage account name and key secrets with the newly generated values. 
 
 ## Python
 
