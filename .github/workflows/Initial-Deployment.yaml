@@ -20,7 +20,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - uses: ./.github/workflows/Intialization_Template
+      - uses: ./.github/workflows/Intialization_Template.yaml
 
       - name: Powershell Script Terraform
         working-directory: Terraform-Infrastructure
